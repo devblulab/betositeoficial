@@ -68,7 +68,7 @@ import {
   School,
 } from '@material-ui/icons';
 import { motion, AnimatePresence } from 'framer-motion';
-import SupportAgent from '@mui/icons-material/SupportAgent';
+import SupportAgent from '@mui/icons-material';
 
 
 const useStyles = makeStyles((theme) => ({
