@@ -40,7 +40,7 @@ import {
   InputLabel,
   Select,
   Divider,
-} from '@material-ui/core';
+} from '@mui/icons-material';
 import {
   Dashboard,
   Person,
