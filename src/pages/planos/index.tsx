@@ -68,7 +68,8 @@ import {
   School,
 } from '@material-ui/icons';
 import { motion, AnimatePresence } from 'framer-motion';
-import Support from '@mui/icons-material/Support';
+import SupportAgent from '@mui/icons-material/SupportAgent';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -397,7 +398,7 @@ const Planos: React.FC = () => {
         { text: 'Integração bancária', icon: <AccountBalance /> },
         { text: 'Gestão de equipes', icon: <Group /> },
         { text: 'Automação completa', icon: <Speed /> },
-        { text: 'Suporte dedicado 24/7', icon: <Support /> },
+        { text: 'Suporte dedicado 24/7', icon: <SupportAgent /> },
         { text: 'Treinamento incluso', icon: <School /> },
         { text: 'Customizações', icon: <Build /> },
         { text: 'SLA garantido', icon: <VerifiedUser /> },
@@ -667,7 +668,7 @@ const Planos: React.FC = () => {
                     <ListItemText primary="Atualizações constantes" secondary="Novos recursos toda semana" />
                   </ListItem>
                   <ListItem>
-                    <ListItemIcon><Support style={{ color: '#667eea' }} /></ListItemIcon>
+                    <ListItemIcon><SupportAgent style={{ color: '#667eea' }} /></ListItemIcon>
                     <ListItemText primary="Suporte especializado" secondary="Time dedicado ao seu sucesso" />
                   </ListItem>
                   <ListItem>
