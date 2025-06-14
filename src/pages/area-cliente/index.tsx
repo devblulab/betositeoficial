@@ -509,7 +509,7 @@ const AreaCliente: React.FC = () => {
   >
     <Tab
       label={
-        <Box display="flex" alignItems="center" gap={1}>
+        <Box display="flex" alignItems="center" style={{ gap: 1 }}>
           <Dashboard />
           Dashboard
         </Box>
@@ -517,7 +517,7 @@ const AreaCliente: React.FC = () => {
     />
     <Tab
       label={
-        <Box display="flex" alignItems="center" gap={1}>
+        <Box display="flex" alignItems="center" style={{ gap: 1 }}>
           <Assignment />
           Novo Requerimento
         </Box>
@@ -525,7 +525,7 @@ const AreaCliente: React.FC = () => {
     />
     <Tab
       label={
-        <Box display="flex" alignItems="center" gap={1}>
+        <Box display="flex" alignItems="center" style={{ gap: 1 }}>
           <Assessment />
           Acompanhamento
         </Box>
