@@ -431,7 +431,7 @@ const ServicosDigitaisEmpresas: React.FC = memo(() => {
                                   <Typography variant="h6" gutterBottom style={{ color: '#2c3e50', fontWeight: 600 }}>
                                     🎯 Ações Rápidas
                                   </Typography>
-                                  <Box display="flex" flexDirection="column" gap={1}>
+                                  <Box display="flex" flexDirection="column" style={{gap: 1}}>
                                     {service.details.actions.map((action, idx) => (
                                       <Link key={idx} href={action.link} style={{ textDecoration: 'none' }}>
                                         <Button
