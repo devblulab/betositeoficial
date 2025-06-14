@@ -40,7 +40,7 @@ import {
   Settings,
   VerifiedUser,
   Speed,
-  Support,
+ 
   Backup,
   Timeline,
   AccountBalance,
@@ -68,6 +68,7 @@ import {
   School,
 } from '@material-ui/icons';
 import { motion, AnimatePresence } from 'framer-motion';
+import Support from '@mui/icons-material/Support';
 
 const useStyles = makeStyles((theme) => ({
   root: {
