@@ -769,7 +769,7 @@ const Dashboard = () => {
                       </Box>
                     </Grid>
                     <Grid item xs={12} sm={4}>
-                      <Box display="flex" flexDirection="column" gap={1}>
+                      <Box display="flex" flexDirection="column" style={{ gap: 1}}>
                         <Chip
                           icon={getStatusIcon(doc.status)}
                           label={doc.status || 'Pendente'}
