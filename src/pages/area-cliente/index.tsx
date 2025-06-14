@@ -40,7 +40,8 @@ import {
   InputLabel,
   Select,
   Divider,
-} from '@mui/icons-material';
+} from '@material-ui/core';
+
 import {
   Dashboard,
   Person,
@@ -499,30 +500,39 @@ const AreaCliente: React.FC = () => {
             Beto Dheon - Área do Cliente
           </Typography>
 
-          <Box className={classes.tabsContainer}>
-            <Tabs
-              value={activeTab}
-              onChange={handleTabChange}
-              className={classes.tabs}
-              centered
-            >
-              <Tab
-                label="Dashboard"
-                icon={<Dashboard />}
-                iconPosition="start"
-              />
-              <Tab
-                label="Novo Requerimento"
-                icon={<Assignment />}
-                iconPosition="start"
-              />
-              <Tab
-                label="Acompanhamento"
-                icon={<Assessment />}
-                iconPosition="start"
-              />
-            </Tabs>
-          </Box>
+     <Box className={classes.tabsContainer}>
+  <Tabs
+    value={activeTab}
+    onChange={handleTabChange}
+    className={classes.tabs}
+    centered
+  >
+    <Tab
+      label={
+        <Box display="flex" alignItems="center" gap={1}>
+          <Dashboard />
+          Dashboard
+        </Box>
+      }
+    />
+    <Tab
+      label={
+        <Box display="flex" alignItems="center" gap={1}>
+          <Assignment />
+          Novo Requerimento
+        </Box>
+      }
+    />
+    <Tab
+      label={
+        <Box display="flex" alignItems="center" gap={1}>
+          <Assessment />
+          Acompanhamento
+        </Box>
+      }
+    />
+  </Tabs>
+</Box>
 
           <Box className={classes.userMenu}>
             <Badge badgeContent={stats.pendentes} color="error">
