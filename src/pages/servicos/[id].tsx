@@ -321,7 +321,7 @@ const ServicoDetail: React.FC<ServicoDetailProps> = ({ servico }) => {
                   Documentos Necessários
                 </Typography>
                 <List>
-                  {servico.documentos.map((documento, index) => (
+                  {servico.documentos?.map((documento, index) => (
                     <ListItem key={index} className={classes.documentItem}>
                       <ListItemIcon>
                         <CheckCircle style={{ color: '#059669' }} />
