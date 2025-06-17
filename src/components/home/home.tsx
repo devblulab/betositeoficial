@@ -351,11 +351,7 @@ export default function ResponsiveAppBar() {
       title: "Áreas Principais",
       items: [
         // Sempre mostrar serviços públicos
-        {
-          icon: <People />,
-          text: "Área Serviços",
-          path: "/servicos",
-        },
+       
         // Área Cliente - apenas para usuários com permissão
         ...(hasClienteAccess ? [{
           icon: <Person />,
@@ -378,34 +374,7 @@ export default function ResponsiveAppBar() {
         }] : [])
       ]
     },
-    // Serviços Jurídicos - apenas para clientes e empresas
-    ...(hasClienteAccess || hasEmpresarialAccess ? [{
-      title: "Serviços Jurídicos",
-      items: [
-        {
-          icon: <Assignment />,
-          text: "Requerimentos",
-          subItems: [
-            { text: "Novo Requerimento", path: "/beto/requerimento" },
-            { text: "Versão Digital", path: "/beto/requerimento/digital" },
-            { text: "Histórico", path: "/beto/requerimento/historico" }
-          ]
-        },
-        {
-          icon: <TransferWithinAStation />,
-          text: "Transferências",
-          subItems: [
-            { text: "Nova Transferência", path: "/beto/transferencia" },
-            { text: "Acompanhar Status", path: "/beto/transferencia/status" }
-          ]
-        },
-        {
-          icon: <Gavel />,
-          text: "Anuência",
-          path: "/beto/anuencia"
-        }
-      ]
-    }] : []),
+    
     // Gestão - apenas para empresas e colaboradores
     ...(hasEmpresarialAccess || hasColaboradorAccess ? [{
       title: "Gestão",
@@ -414,11 +383,6 @@ export default function ResponsiveAppBar() {
           icon: <Dashboard />,
           text: "Dashboard",
           path: "/beto/dashboard"
-        },
-        {
-          icon: <Assessment />,
-          text: "Acompanhar Processos",
-          path: "/beto/dashboard/empresas"
         },
         {
           icon: <AccountBalance />,
