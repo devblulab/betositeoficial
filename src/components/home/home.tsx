@@ -484,10 +484,10 @@ export default function ResponsiveAppBar() {
           <Typography variant="body2" style={{ opacity: 0.9, marginBottom: 16 }}>
             Faça login para acessar o sistema completo
           </Typography>
-          
+
           {/* Componente de Login Integrado */}
           <LoginEmailSenha />
-          
+
           <Typography variant="caption" style={{ 
             textAlign: 'center', 
             opacity: 0.8, 
@@ -496,7 +496,7 @@ export default function ResponsiveAppBar() {
           }}>
             ── ou ──
           </Typography>
-          
+
           <Button
             startIcon={<ViewModule />}
             className={classes.loginButton}
@@ -505,7 +505,7 @@ export default function ResponsiveAppBar() {
           >
             Ver Todos Serviços
           </Button>
-          
+
           <Button
             startIcon={<FaWhatsapp />}
             className={classes.loginButton}
@@ -573,17 +573,23 @@ export default function ResponsiveAppBar() {
                     <Collapse in={isAuthenticated && expandedSections[`${sectionIndex}-${itemIndex}`]} timeout="auto" unmountOnExit>
                       <List component="div" disablePadding>
                         {item.subItems.map((subItem, subIndex) => (
-                          <Link href={subItem.path} key={subIndex} style={{ textDecoration: 'none', color: 'inherit' }}>
-                            <ListItem button className={classes.subMenuItem}>
-                              <ListItemIcon className={classes.subMenuItemIcon}>
-                                <Assignment />
-                              </ListItemIcon>
-                              <ListItemText 
-                                primary={subItem.text} 
-                                className={classes.subMenuItemText}
-                              />
-                            </ListItem>
-                          </Link>
+                          <ListItem 
+                            button 
+                            key={subIndex}
+                            className={classes.subMenuItem}
+                            onClick={() => {
+                              setDrawerOpen(false);
+                              window.location.href = subItem.path;
+                            }}
+                          >
+                            <ListItemIcon className={classes.subMenuItemIcon}>
+                              <Assignment />
+                            </ListItemIcon>
+                            <ListItemText 
+                              primary={subItem.text} 
+                              className={classes.subMenuItemText}
+                            />
+                          </ListItem>
                         ))}
                       </List>
                     </Collapse>
