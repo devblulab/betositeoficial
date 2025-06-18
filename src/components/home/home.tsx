@@ -23,30 +23,23 @@ import {
   Paper,
   Chip
 } from '@material-ui/core';
-import {
-  Menu as MenuIcon,
-  Person,
-  Business,
-  People,
-  Assignment,
-  TransferWithinAStation,
-  Gavel,
-  Dashboard,
-  Close as CloseIcon,
-  ExpandLess,
-  ExpandMore,
-  Fingerprint,
-  AccountBox,
-  Build,
-  Assessment,
-  Lock,
-  ExitToApp,
-  VpnKey,
-  ViewModule,
-  AccountBalance
-} from '@material-ui/icons';
+// Importações otimizadas - apenas os ícones necessários
+import MenuIcon from '@material-ui/icons/Menu';
+import Person from '@material-ui/icons/Person';
+import Business from '@material-ui/icons/Business';
+import People from '@material-ui/icons/People';
+import Assignment from '@material-ui/icons/Assignment';
+import Dashboard from '@material-ui/icons/Dashboard';
+import CloseIcon from '@material-ui/icons/Close';
+import ExpandLess from '@material-ui/icons/ExpandLess';
+import ExpandMore from '@material-ui/icons/ExpandMore';
+import Lock from '@material-ui/icons/Lock';
+import ExitToApp from '@material-ui/icons/ExitToApp';
+import VpnKey from '@material-ui/icons/VpnKey';
+import ViewModule from '@material-ui/icons/ViewModule';
+import AccountBalance from '@material-ui/icons/AccountBalance';
 
-import { FaSignOutAlt, FaWhatsapp, FaGoogle } from 'react-icons/fa';
+import { FaWhatsapp } from 'react-icons/fa';
 import Link from 'next/link';
 import AutenticacaoContext from '@/data/contexts/AutenticacaoContext';
 import LoginEmailSenha from '@/components/landing/cabecalho/LoginEmailSenha';
@@ -350,8 +343,7 @@ export default function ResponsiveAppBar() {
     {
       title: "Áreas Principais",
       items: [
-        // Sempre mostrar serviços públicos
-       
+     
         // Área Cliente - apenas para usuários com permissão
         ...(hasClienteAccess ? [{
           icon: <Person />,
@@ -374,8 +366,6 @@ export default function ResponsiveAppBar() {
         }] : [])
       ]
     },
-    
-    // Gestão - apenas para empresas e colaboradores
     ...(hasEmpresarialAccess || hasColaboradorAccess ? [{
       title: "Gestão",
       items: [
@@ -383,15 +373,8 @@ export default function ResponsiveAppBar() {
           icon: <Dashboard />,
           text: "Dashboard",
           path: "/beto/dashboard"
-        },
-        {
-          icon: <AccountBalance />,
-          text: "Relatórios",
-          subItems: [
-            { text: "Relatório Mensal", path: "/beto/relatorios/mensal" },
-            { text: "Relatório Anual", path: "/beto/relatorios/anual" }
-          ]
         }
+        
       ]
     }] : [])
   ];
@@ -566,8 +549,8 @@ export default function ResponsiveAppBar() {
                       (item.text === "Área do Cliente" && hasClienteAccess) ||
                       (item.text === "Área Empresarial" && hasEmpresarialAccess) ||
                       (item.text === "Área Colaboradores" && hasColaboradorAccess) ||
-                      (item.text.includes("Dashboard") && (hasEmpresarialAccess || hasColaboradorAccess)) ||
-                      (item.text.includes("Relatórios") && (hasEmpresarialAccess || hasColaboradorAccess))
+                      (item.text.includes("Dashboard") && ( hasColaboradorAccess)) ||
+                      (item.text.includes("Relatórios") && ( hasColaboradorAccess))
                     );
 
                     return hasAccess ? (
@@ -672,35 +655,7 @@ export default function ResponsiveAppBar() {
           </>
         ) : (
           <>
-            <Typography variant="h6" style={{ 
-              textAlign: 'center', 
-              color: '#4a7c59',
-              fontWeight: 'bold',
-              margin: '16px 0 8px',
-              fontFamily: '"Playfair Display", "Georgia", serif'
-            }}>
-              🎯 Acesso Rápido
-            </Typography>
-            <Button
-              startIcon={<ViewModule />}
-              className={classes.actionButton}
-              onClick={() => window.location.href = '/servicos'}
-              fullWidth
-            >
-              Explorar Serviços
-            </Button>
-            <Button
-              startIcon={<FaWhatsapp />}
-              className={classes.actionButton}
-              style={{
-                background: 'linear-gradient(45deg, #25d366 30%, #22c55e 90%)',
-                color: '#fff'
-              }}
-              onClick={() => setContactDialog(true)}
-              fullWidth
-            >
-              Atendimento WhatsApp
-            </Button>
+           
           </>
         )}
       </Box>
