@@ -16,6 +16,7 @@ html, body {
   margin: 0;
   padding: 0;
   overflow-x: hidden !important;
+  width: 100vw;
   max-width: 100vw;
   scroll-behavior: smooth;
   min-height: 100vh;
@@ -300,47 +301,17 @@ a:hover {
   color: #000000 !important;
 }
 
-/* 🔤 CLASSES DE FONTES LUXUOSAS */
-.font-display {
+/* 🎨 TIPOGRAFIA OTIMIZADA */
+.font-playfair, .font-luxury-title {
   font-family: 'Playfair Display', serif !important;
+  font-weight: 700;
   letter-spacing: -0.01em;
   text-rendering: optimizeLegibility;
 }
 
-.font-serif-elegant {
-  font-family: 'Crimson Text', serif !important;
-  letter-spacing: 0.005em;
-  text-rendering: optimizeLegibility;
-}
-
-.font-serif-classic {
-  font-family: 'Libre Baskerville', serif !important;
-  letter-spacing: 0.01em;
-  text-rendering: optimizeLegibility;
-}
-
-.font-serif-decorative {
-  font-family: 'Cormorant Garamond', serif !important;
-  letter-spacing: 0.015em;
-  text-rendering: optimizeLegibility;
-}
-
-.font-luxury-title {
-  font-family: 'Playfair Display', serif !important;
-  font-weight: 700;
-  letter-spacing: -0.015em;
-  text-shadow: 0 2px 4px rgba(26, 54, 93, 0.1);
-}
-
-.font-luxury-subtitle {
-  font-family: 'Crimson Text', serif !important;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-}
-
 .font-luxury-body {
-  font-family: 'Libre Baskerville', serif !important;
-  line-height: 1.8;
+  font-family: 'Playfair Display', serif !important;
+  line-height: 1.6;
   letter-spacing: 0.01em;
 }
 
@@ -376,19 +347,17 @@ a:hover {
 
 /* Main content wrapper responsive behavior */
 .main-content-wrapper {
-  margin-left: 280px;
+  margin: 0;
+  padding: 0;
   transition: margin-left 0.3s ease;
   min-height: 100vh;
+  width: 100vw;
+  max-width: 100vw;
   background: linear-gradient(135deg, #fafbfc 0%, #f7fafc 100%);
+  overflow-x: hidden;
 }
 
-@media (max-width: 960px) {
-  .main-content-wrapper {
-    margin-left: 0 !important;
-  }
-}
-
-/* Ensure menu is visible on desktop */
+/* Menu vertical oculto por padrão */
 .vertical-menu {
   position: fixed;
   left: 0;
@@ -396,20 +365,15 @@ a:hover {
   width: 280px;
   height: calc(100vh - 72px);
   z-index: 1000;
-  transform: translateX(0);
+  transform: translateX(-100%);
   background: white;
   border-right: 1px solid #e2e8f0;
   box-shadow: 4px 0 6px -1px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
 }
 
-@media (max-width: 960px) {
-  .vertical-menu {
-    transform: translateX(-100%);
-  }
-
-  .vertical-menu.open {
-    transform: translateX(0);
-  }
+.vertical-menu.open {
+  transform: translateX(0);
 }
 
 /* 🎯 SCROLL BARS ELEGANTES */
