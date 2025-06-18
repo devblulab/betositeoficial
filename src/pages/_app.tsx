@@ -1,17 +1,27 @@
 import React, { useState } from 'react';
+import dynamic from 'next/dynamic';
 import { ThemeProvider, createGlobalStyle, DefaultTheme } from 'styled-components';
 import { AutenticacaoProvider } from '@/data/contexts/AutenticacaoContext';
 import { MantineProvider } from '@mantine/core';
 import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import muiTheme from '@/theme'; // Verifique se o arquivo existe!
-import Particles from '@/components/landing/particles';
+import muiTheme from '@/theme';
 import { FaSun, FaMoon } from 'react-icons/fa';
 import type { AppProps } from 'next/app';
 
-import MenuTopBeto from '@/components/home/home'; // Caminho do seu menu
+import MenuTopBeto from '@/components/home/home';
 import '@/styles/globals.css';
-import ChatBot from '../components/chat/ChatBot';
+
+// Dynamic imports para reduzir bundle inicial
+const ChatBot = dynamic(() => import('../components/chat/ChatBot'), {
+  ssr: false,
+  loading: () => null
+});
+
+const Particles = dynamic(() => import('@/components/landing/particles'), {
+  ssr: false,
+  loading: () => null
+});
 
 // Temas customizáveis
 const lightTheme: DefaultTheme = {
@@ -79,10 +89,7 @@ function App({ Component, pageProps }: AppProps) {
           <AutenticacaoProvider>
             <MenuTopBeto />
             {/* Conteúdo principal da página */}
-            <div className="main-content-wrapper" style={{ 
-              marginLeft: '280px', 
-              transition: 'margin-left 0.3s ease'
-            }}>
+            <div className="main-content-wrapper">
               <Component {...pageProps} />
             </div>
 
