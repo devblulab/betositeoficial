@@ -341,7 +341,7 @@ export default function ResponsiveAppBar() {
         {
           icon: <People />,
           text: "Acompanhar Serviços",
-          path: "/acompanhar",
+          path: "/acompanhamento",
         }
       ]
     },
