@@ -337,6 +337,11 @@ export default function ResponsiveAppBar() {
           icon: <People />,
           text: "Área Serviços",
           path: "/servicos",
+        },
+        {
+          icon: <People />,
+          text: "Acompanhar Serviços",
+          path: "/acompanhar",
         }
       ]
     },
@@ -544,18 +549,22 @@ export default function ResponsiveAppBar() {
                 ) : (
                   // Verificar se o usuário tem acesso ao item específico
                   (() => {
-                    const hasAccess = isAuthenticated && (
-                      item.text === "Área Serviços" || // Sempre acessível
-                      (item.text === "Área do Cliente" && hasClienteAccess) ||
-                      (item.text === "Área Empresarial" && hasEmpresarialAccess) ||
-                      (item.text === "Área Colaboradores" && hasColaboradorAccess) ||
-                      (item.text.includes("Dashboard") && ( hasColaboradorAccess)) ||
-                      (item.text.includes("Relatórios") && ( hasColaboradorAccess))
+                    const hasAccess = (
+                      item.text === "Área Serviços" || 
+                      item.text === "Acompanhar Serviços" ||
+                      (isAuthenticated && (
+                        (item.text === "Área do Cliente" && hasClienteAccess) ||
+                        (item.text === "Área Empresarial" && hasEmpresarialAccess) ||
+                        (item.text === "Área Colaboradores" && hasColaboradorAccess) ||
+                        (item.text.includes("Dashboard") && hasColaboradorAccess) ||
+                        (item.text.includes("Relatórios") && hasColaboradorAccess)
+                      ))
                     );
 
+
                     return hasAccess ? (
-                      <Link href={item.path || '#'} style={{ textDecoration: 'none', color: 'inherit' }}>
-                        <ListItem button className={`${classes.menuItem} ${classes.menuItemAuthenticated}`}>
+                      <Link href={item.path || '#'} passHref legacyBehavior>
+                        <ListItem button component="a" className={`${classes.menuItem} ${classes.menuItemAuthenticated}`}>
                           <ListItemIcon className={classes.menuItemIcon}>
                             {item.icon}
                           </ListItemIcon>
