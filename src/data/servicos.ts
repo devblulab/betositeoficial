@@ -11,195 +11,273 @@ export interface Servico {
 
 export const servicos: Servico[] = [
   {
-    id: 1017,
-    nome: "ADESIVO ANTT",
+    id: 2001,
+    nome: "ALTERAÇÃO DE DADOS",
+    categoria: "Transferências",
+    icone: "Edit",
+    descricao: "Detran: R$183,12 + honorário: R$185,88 = R$369,00",
+    documentos: [
+      "CRV (Certificado de Registro do Veículo)",
+      "Documento de identificação do proprietário",
+      "Comprovante de residência",
+      "Procuração (se necessário)"
+    ],
+    valor: "369,00",
+    tipo: "TAXAS"
+  },
+  {
+    id: 2002,
+    nome: "ANTT (Pessoa Física ou Jurídica)",
     categoria: "Serviços de ANTT e Transporte",
     icone: "LocalShipping",
-    descricao: "Certificação obrigatória para veículos de transporte de cargas, incluindo aplicação de adesivos identificadores para regularização junto à ANTT.",
-    documentos: ["CRLV atualizado", "Documento de identificação", "Comprovante de endereço"],
-    valor: "20,00",
-    tipo: "TAXAS"
+    descricao: "Pessoa Física: R$900,00 | Pessoa Jurídica: R$1.200,00",
+    documentos: [
+      "CNH do proprietário",
+      "Comprovante de residência",
+      "CRLV do veículo",
+      "CNPJ ou CPF",
+      "Contrato social (PJ)"
+    ],
+    valor: "900,00 - 1.200,00",
+    tipo: "OUTRAS DESPESAS"
   },
   {
-    id: 1093,
-    nome: "VISTORIA CARRO",
-    categoria: "Vistorias e Inspeções",
-    icone: "Search",
-    descricao: "Inspeção técnica obrigatória para renovação do licenciamento anual, verificando condições de segurança e emissões do veículo.",
-    documentos: ["CRLV original", "Comprovante de IPVA", "Comprovante de seguro obrigatório"],
-    valor: "240,00",
-    tipo: "TAXAS"
-  },
-  {
-    id: 1001,
-    nome: "TRANSFERÊNCIA DE PROPRIEDADE",
+    id: 2003,
+    nome: "ATPVE + ASSINATURA + COMUNICAÇÃO DE VENDA",
     categoria: "Transferências",
-    icone: "TrendingUp",
-    descricao: "Processo completo de transferência de propriedade de veículo, incluindo toda documentação necessária.",
-    documentos: ["CRLV", "CRV", "Comprovante de venda", "RG e CPF de ambas as partes"],
-    valor: "350,00",
+    icone: "Receipt",
+    descricao: "Valor total: R$46,00",
+    documentos: [
+      "CRV assinado",
+      "Documento de identificação do vendedor",
+      "CPF/CNPJ do comprador"
+    ],
+    valor: "46,00",
     tipo: "TAXAS"
   },
   {
-    id: 1002,
-    nome: "PRIMEIRA HABILITAÇÃO",
-    categoria: "CNH e Habilitação",
-    icone: "Person",
-    descricao: "Processo completo para obtenção da primeira carteira nacional de habilitação categoria B.",
-    documentos: ["RG", "CPF", "Comprovante de residência", "Foto 3x4"],
-    valor: "680,00",
+    id: 2004,
+    nome: "AUTORIZAÇÃO DE ESTAMPAGEM",
+    categoria: "Documentos Veiculares",
+    icone: "ConfirmationNumber",
+    descricao: "R$60,00 + R$100,00 (por placa) = R$160,00",
+    documentos: [
+      "Laudo de vistoria",
+      "Documento do veículo (CRLV)",
+      "Documento de identificação"
+    ],
+    valor: "160,00",
     tipo: "TAXAS"
   },
   {
-    id: 1003,
-    nome: "RENOVAÇÃO CNH",
-    categoria: "CNH e Habilitação",
-    icone: "Build",
-    descricao: "Renovação da carteira nacional de habilitação com exames médicos e psicológicos.",
-    documentos: ["CNH atual", "RG", "CPF", "Foto 3x4", "Exames médicos"],
-    valor: "280,00",
+    id: 2005,
+    nome: "BAIXA DA RESTRIÇÃO ADMINISTRATIVA",
+    categoria: "Documentos Veiculares",
+    icone: "Block",
+    descricao: "Valor total: R$120,00",
+    documentos: [
+      "Documento do veículo",
+      "Documento de identificação do proprietário",
+      "Comprovante da quitação da restrição"
+    ],
+    valor: "120,00",
     tipo: "TAXAS"
   },
   {
-    id: 1004,
-    nome: "LICENCIAMENTO ANUAL",
+    id: 2006,
+    nome: "BAIXA DE VEÍCULO",
+    categoria: "Documentos Veiculares",
+    icone: "Delete",
+    descricao: "Tubarão: Detran: R$183,12 + honorário: R$185,88 = R$369,00",
+    documentos: [
+      "Documento do veículo",
+      "Documento de identificação",
+      "Comprovante de baixa do motor (se aplicável)"
+    ],
+    valor: "369,00",
+    tipo: "TAXAS"
+  },
+  {
+    id: 2007,
+    nome: "CERTIFICADO DIGITAL",
+    categoria: "Assinatura e Certificação",
+    icone: "VerifiedUser",
+    descricao: "Valor total: R$145,00",
+    documentos: [
+      "Documento de identificação com foto",
+      "CPF",
+      "Comprovante de endereço"
+    ],
+    valor: "145,00",
+    tipo: "OUTRAS DESPESAS"
+  },
+  {
+    id: 2008,
+    nome: "EMISSÃO DE LICENCIAMENTO",
     categoria: "Licenciamento",
     icone: "Description",
-    descricao: "Licenciamento anual obrigatório para circulação do veículo, incluindo pagamento de taxas.",
-    documentos: ["CRLV", "Comprovante de IPVA", "Seguro obrigatório"],
-    valor: "150,00",
+    descricao: "Valor total: R$50,00",
+    documentos: [
+      "CRV ou CRLV",
+      "Comprovante de pagamento do IPVA",
+      "Comprovante do DPVAT (quando exigido)"
+    ],
+    valor: "50,00",
     tipo: "TAXAS"
   },
   {
-    id: 1005,
-    nome: "SEGUNDA VIA CRLV",
+    id: 2009,
+    nome: "EMISSÃO DE LICENCIAMENTO DE FORA",
+    categoria: "Licenciamento",
+    icone: "FileCopy",
+    descricao: "Valor total: R$134,00",
+    documentos: [
+      "Comprovante de pagamento do IPVA e taxa de licenciamento",
+      "Documento anterior",
+      "Documento de identificação"
+    ],
+    valor: "134,00",
+    tipo: "TAXAS"
+  },
+  {
+    id: 2010,
+    nome: "INDICAÇÃO DE CONDUTOR",
+    categoria: "CNH e Habilitação",
+    icone: "PersonAdd",
+    descricao: "Valor total: R$39,00",
+    documentos: [
+      "Formulário de indicação preenchido",
+      "Documento do infrator e do condutor indicado",
+      "CNH do condutor"
+    ],
+    valor: "39,00",
+    tipo: "TAXAS"
+  },
+  {
+    id: 2011,
+    nome: "LICENCIAMENTO (Tubarão)",
+    categoria: "Licenciamento",
+    icone: "Description",
+    descricao: "À vista: R$77,00 | Cartão: R$124,00",
+    documentos: [
+      "Documento do veículo",
+      "IPVA quitado",
+      "DPVAT quitado"
+    ],
+    valor: "77,00 - 124,00",
+    tipo: "TAXAS"
+  },
+  {
+    id: 2012,
+    nome: "PRIMEIRO EMPLACAMENTO",
+    categoria: "Licenciamento",
+    icone: "DirectionsCar",
+    descricao: "Tubarão: Detran: R$183,12 + honorário: R$185,88 = R$369,00",
+    documentos: [
+      "Nota fiscal do veículo",
+      "Documento de identificação do comprador",
+      "Comprovante de residência",
+      "Declaração de procedência"
+    ],
+    valor: "369,00",
+    tipo: "TAXAS"
+  },
+  {
+    id: 2013,
+    nome: "PROCURAÇÃO ELETRÔNICA",
     categoria: "Documentos Veiculares",
     icone: "Assignment",
-    descricao: "Emissão de segunda via do Certificado de Registro de Licenciamento de Veículo.",
-    documentos: ["RG", "CPF", "Comprovante de residência", "Boletim de ocorrência (se aplicável)"],
-    valor: "95,00",
+    descricao: "Valor total: R$90,00",
+    documentos: [
+      "Documento de identificação de ambas as partes",
+      "Dados do veículo (CRLV ou CRV)",
+      "CPF/CNPJ de quem receberá poderes"
+    ],
+    valor: "90,00",
     tipo: "TAXAS"
   },
   {
-    id: 1006,
-    nome: "MUDANÇA DE CATEGORIA CNH",
-    categoria: "CNH e Habilitação",
-    icone: "TrendingUp",
-    descricao: "Processo para mudança de categoria da CNH (ex: B para C, D ou E).",
-    documentos: ["CNH atual", "RG", "CPF", "Exames médicos", "Curso teórico"],
-    valor: "420,00",
+    id: 2014,
+    nome: "REMARCAÇÃO DE CHASSI",
+    categoria: "Documentos Veiculares",
+    icone: "Settings",
+    descricao: "Detran: R$183,12 + honorário: R$185,88 = R$369,00",
+    documentos: [
+      "Laudo pericial de necessidade de remarcação",
+      "Documento do veículo",
+      "Documento de identificação"
+    ],
+    valor: "369,00",
     tipo: "TAXAS"
   },
   {
-    id: 1007,
-    nome: "ATPV - AUTORIZAÇÃO TRANSPORTE",
-    categoria: "Serviços de ANTT e Transporte",
-    icone: "CheckCircle",
-    descricao: "Autorização para Transporte Público de Veículos, necessária para empresas transportadoras.",
-    documentos: ["Contrato social", "CNPJ", "Alvará de funcionamento", "CRLV dos veículos"],
-    valor: "580,00",
-    tipo: "TAXAS"
-  },
-  {
-    id: 1008,
-    nome: "ANUÊNCIA BOMBEIROS",
-    categoria: "Anuências",
-    icone: "Security",
-    descricao: "Solicitação de anuência junto ao Corpo de Bombeiros para estabelecimentos comerciais.",
-    documentos: ["Projeto arquitetônico", "ART do responsável técnico", "Alvará municipal"],
-    valor: "320,00",
-    tipo: "OUTRAS DESPESAS"
-  },
-  {
-    id: 1009,
-    nome: "COMUNICAÇÃO DE VENDA",
-    categoria: "Transferências",
-    icone: "Business",
-    descricao: "Comunicação oficial de venda de veículo para transferir responsabilidades.",
-    documentos: ["CRLV", "Comprovante de venda", "RG e CPF do vendedor"],
-    valor: "45,00",
-    tipo: "TAXAS"
-  },
-  {
-    id: 1010,
-    nome: "VISTORIA MOTO",
-    categoria: "Vistorias e Inspeções",
+    id: 2015,
+    nome: "RESTAURAÇÃO DE HODÔMETRO",
+    categoria: "Documentos Veiculares",
     icone: "Build",
-    descricao: "Vistoria específica para motocicletas, incluindo verificação de componentes de segurança.",
-    documentos: ["CRLV da motocicleta", "RG", "CPF", "Comprovante de IPVA"],
-    valor: "180,00",
-    tipo: "TAXAS"
-  },
-  {
-    id: 1011,
-    nome: "REGULARIZAÇÃO MULTAS",
-    categoria: "Multas e Infrações",
-    icone: "Warning",
-    descricao: "Serviço de regularização e parcelamento de multas de trânsito em atraso.",
-    documentos: ["CNH", "CRLV", "Comprovantes das multas"],
+    descricao: "Valor total: R$120,00",
+    documentos: [
+      "Laudo técnico da oficina",
+      "Documento do veículo",
+      "Documento do proprietário"
+    ],
     valor: "120,00",
-    tipo: "OUTRAS DESPESAS"
-  },
-  {
-    id: 1012,
-    nome: "INCLUSÃO DE CONDUTOR",
-    categoria: "CNH e Habilitação",
-    icone: "AccountBox",
-    descricao: "Inclusão de condutor autorizado para conduzir veículo de terceiros.",
-    documentos: ["CNH do condutor", "RG", "CPF", "Autorização do proprietário"],
-    valor: "75,00",
     tipo: "TAXAS"
   },
   {
-    id: 1013,
-    nome: "EMISSÃO DE ATPV-E",
-    categoria: "Serviços de ANTT e Transporte",
-    icone: "Receipt",
-    descricao: "Emissão de Autorização para Transporte de Produtos Perigosos eletrônica.",
-    documentos: ["CRLV", "CNH categoria D/E", "Curso MOPP"],
-    valor: "450,00",
+    id: 2016,
+    nome: "SEGUNDA VIA CRV",
+    categoria: "Documentos Veiculares",
+    icone: "FileCopy",
+    descricao: "Tubarão: Detran: R$444,00 + honorário: R$185,00 = R$629,00",
+    documentos: [
+      "Boletim de ocorrência (perda, roubo, etc.)",
+      "CRLV (se houver)",
+      "Documento de identificação",
+      "Procuração (se necessário)"
+    ],
+    valor: "629,00",
     tipo: "TAXAS"
   },
   {
-    id: 1014,
-    nome: "CONSULTA DE DÉBITOS",
-    categoria: "Consultas",
-    icone: "FindInPage",
-    descricao: "Consulta completa de débitos veiculares, incluindo IPVA, multas e taxas.",
-    documentos: ["Placa do veículo", "Renavam"],
-    valor: "25,00",
-    tipo: "OUTRAS DESPESAS"
+    id: 2017,
+    nome: "TRANSFERÊNCIA",
+    categoria: "Transferências",
+    icone: "SyncAlt",
+    descricao: "Detran: R$183,12 + honorário: R$185,88 = R$369,00",
+    documentos: [
+      "CRV preenchido e assinado",
+      "Documento de identificação das partes",
+      "Comprovante de endereço",
+      "Laudo de vistoria veicular"
+    ],
+    valor: "369,00",
+    tipo: "TAXAS"
   },
   {
-    id: 1015,
-    nome: "PARCELAMENTO DE DÍVIDAS",
-    categoria: "Financeiro",
-    icone: "CreditCard",
-    descricao: "Parcelamento de dívidas veiculares com condições especiais.",
-    documentos: ["Débitos em aberto", "Comprovante de renda", "RG e CPF"],
-    valor: "80,00",
-    tipo: "OUTRAS DESPESAS"
-  },
-  {
-    id: 1016,
-    nome: "CADASTRO CONDUTOR EXTERIOR",
-    categoria: "CNH e Habilitação",
-    icone: "Flight",
-    descricao: "Cadastro de condutor para brasileiros residentes no exterior.",
-    documentos: ["Passaporte", "Visto de residência", "CNH do país de residência"],
-    valor: "520,00",
+    id: 2018,
+    nome: "TRANSFERÊNCIA COM ALTERAÇÃO",
+    categoria: "Transferências",
+    icone: "CompareArrows",
+    descricao: "Detran: R$366,24 (2 taxas de R$183,12) + honorário: R$185,88 = R$553,00",
+    documentos: [
+      "CRV preenchido e assinado",
+      "Documento de identificação",
+      "Comprovante de endereço",
+      "Laudo de vistoria",
+      "Documentos referentes à alteração"
+    ],
+    valor: "553,00",
     tipo: "TAXAS"
   }
 ];
 
 export const categorias = [
   "Todos",
-  "Serviços de ANTT e Transporte",
-  "Vistorias e Inspeções", 
   "Transferências",
-  "CNH e Habilitação",
+  "Serviços de ANTT e Transporte",
   "Licenciamento",
+  "CNH e Habilitação",
   "Documentos Veiculares",
-  "Anuências",
-  "Multas e Infrações"
+  "Assinatura e Certificação"
 ];
