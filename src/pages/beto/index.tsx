@@ -68,19 +68,20 @@ const NavigationButtons: React.FC = memo(() => {
       ],
     },
     {
-      section: 'Gestão & Relatórios',
+      section: 'Transferencia',
       items: [
         { href: '/beto/transferencia', icon: <FaStore />, label: 'Transferências' },
          { href: '/beto/transferencia/dashboard', icon: <FaChartPie />, label: 'Painel Controle Transferências' },
-        { href: '/beto/anuencia', icon: <FaCog />, label: 'Anuência & Licenças' },
-        { href: '/beto/localizar', icon: <FaUsers />, label: 'Localizar Documentos' },
+       
+       
       ],
     },
     {
       section: 'Administração',
       items: [
-        { href: '/', icon: <FaTachometerAlt />, label: 'Home Institucional' },
-        { href: '/', icon: <FaShoppingCart />, label: 'Portal Principal' },
+        { href: '/beto/anuencia', icon: <FaCog />, label: 'Anuência & Licenças' },
+        { href: '/beto/anuencia/dashboard', icon: <FaChartPie />, label: 'Painel Controle Transferências' },
+        { href: '', icon: <FaChartPie />, label: 'home' },
       ],
     },
   ];
