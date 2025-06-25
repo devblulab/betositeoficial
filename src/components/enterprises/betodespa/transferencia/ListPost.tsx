@@ -1,9 +1,8 @@
-
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { 
   Button, Grid, Paper, Typography, IconButton, 
   Dialog, DialogActions, DialogContent, DialogTitle, useMediaQuery,
-  CircularProgress, Fab, Tooltip
+  CircularProgress, Divider, Fab, Tooltip
 } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -19,6 +18,7 @@ import { Timestamp } from 'firebase/firestore';
 import { storage } from '@/logic/firebase/config/app';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { getCroppedImg } from './cropUtils';
+import { v4 as uuidv4 } from 'uuid';
 import { format } from 'date-fns';
 
 const useStyles = makeStyles((theme) => ({
@@ -86,101 +86,66 @@ const useStyles = makeStyles((theme) => ({
     height: '90px',
     borderRadius: '50%',
     objectFit: 'cover',
-    border: '4px solid rgba(45, 90, 61, 0.2)',
-    boxShadow: '0 10px 15px -3px rgba(45, 90, 61, 0.3)',
+    border: '4px solid rgba(255, 255, 255, 0.2)',
+    boxShadow: '0 0 15px rgba(100, 150, 255, 0.5)',
     marginBottom: theme.spacing(2),
-    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-    '@media print': {
-      border: '2px solid #2d5a3d',
-      boxShadow: 'none',
-    },
+    transition: 'transform 0.3s ease',
     '&:hover': {
-      transform: 'translateY(-2px)',
-      boxShadow: '0 20px 25px -5px rgba(45, 90, 61, 0.4)',
+      transform: 'scale(1.05)',
     },
   },
   title: {
-    fontFamily: '"Playfair Display", serif',
     fontWeight: 800,
-    fontSize: '2.5rem',
-    color: '#ffffff',
+    fontSize: '2rem',
+    color: '#fff',
     textAlign: 'center',
-    textShadow: '0 2px 4px rgba(26, 54, 93, 0.3)',
+    background: 'linear-gradient(90deg, #5C7AEA 0%, #A3BFFA 100%)',
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
+    textShadow: '0 2px 10px rgba(92, 122, 234, 0.5)',
     marginBottom: theme.spacing(1),
-    letterSpacing: '-0.02em',
-    '@media print': {
-      color: '#2d5a3d',
-      textShadow: 'none',
-      fontSize: '2rem',
-    },
   },
   sectionTitle: {
-    fontFamily: '"Playfair Display", serif',
     fontWeight: 700,
-    color: '#2d5a3d',
+    color: '#D6E4FF',
     marginBottom: theme.spacing(2),
     paddingBottom: theme.spacing(1),
-    borderBottom: '2px solid rgba(45, 90, 61, 0.2)',
-    letterSpacing: '-0.01em',
-    fontSize: '1.375rem',
-    '@media print': {
-      borderBottom: '1px solid #2d5a3d',
-    },
+    borderBottom: '2px solid rgba(255, 255, 255, 0.1)',
+    letterSpacing: '0.5px',
   },
   textField: {
-    fontFamily: '"Libre Baskerville", "Crimson Text", "Georgia", serif',
     '& .MuiOutlinedInput-root': {
-      borderRadius: '8px',
-      backgroundColor: 'rgba(255, 255, 255, 0.9)',
-      color: '#1a202c',
-      transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
-      fontFamily: 'inherit',
-      boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)',
-      '@media print': {
-        backgroundColor: 'transparent',
-        boxShadow: 'none',
-        '& .MuiOutlinedInput-notchedOutline': {
-          border: '1px solid #000000',
-        },
-      },
+      borderRadius: '12px',
+      backgroundColor: 'rgba(255, 255, 255, 0.05)',
+      color: '#E0E7FF',
+      transition: 'all 0.3s ease',
       '&:hover .MuiOutlinedInput-notchedOutline': {
-        borderColor: '#2d5a3d',
-        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+        borderColor: '#A3BFFA',
       },
       '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-        borderWidth: '2px',
-        borderColor: '#2d5a3d',
-        boxShadow: '0 0 0 3px rgba(45, 90, 61, 0.1)',
+        borderWidth: '1px',
+        borderColor: '#5C7AEA',
+        boxShadow: '0 0 10px rgba(92, 122, 234, 0.5)',
       },
     },
     '& .MuiInputLabel-outlined': {
-      color: '#4a5568',
-      fontFamily: '"Playfair Display", serif',
-      fontWeight: 600,
+      color: 'rgba(255, 255, 255, 0.6)',
     },
     '& .MuiInputLabel-outlined.Mui-focused': {
-      color: '#2d5a3d',
+      color: '#A3BFFA',
     },
   },
   button: {
-    fontFamily: '"Playfair Display", serif',
-    borderRadius: '8px',
-    padding: theme.spacing(1.5, 3),
-    fontWeight: 600,
-    textTransform: 'none',
-    letterSpacing: '0.05em',
-    boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
-    background: 'linear-gradient(135deg, #2d5a3d 0%, #4a7c59 100%)',
-    color: '#ffffff',
-    border: 'none',
-    transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
-    '@media print': {
-      display: 'none',
-    },
+    borderRadius: '12px',
+    padding: theme.spacing(1.75),
+    fontWeight: 700,
+    textTransform: 'uppercase',
+    letterSpacing: '1px',
+    boxShadow: '0 5px 15px rgba(0, 0, 0, 0.2)',
+    transition: 'all 0.3s ease',
     '&:hover': {
-      background: 'linear-gradient(135deg, #1a4d3a 0%, #2d5a3d 100%)',
-      boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-      transform: 'translateY(-1px)',
+      boxShadow: '0 8px 25px rgba(0, 0, 0, 0.3)',
+      transform: 'translateY(-2px)',
     },
   },
   primaryButton: {
@@ -407,6 +372,21 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: theme.spacing(0),
     margin: '0 auto',
   },
+
+  searchField: {
+    marginBottom: theme.spacing(1),
+    '& .MuiOutlinedInput-root': {
+      borderRadius: '8px',
+    },
+  },
+  downloadButton: {
+    marginTop: theme.spacing(1),
+    backgroundColor: '#4CAF50',
+    color: '#fff',
+    '&:hover': {
+      backgroundColor: '#45a049',
+    },
+  },
   tutorialContainer: {
     background: 'linear-gradient(145deg, rgba(30, 40, 60, 0.95) 0%, rgba(50, 70, 100, 0.85) 100%)',
     padding: theme.spacing(3),
@@ -455,6 +435,7 @@ const useStyles = makeStyles((theme) => ({
     background: 'linear-gradient(90deg, #5C7AEA 0%, #A3BFFA 100%)',
     color: '#fff',
   },
+
   fabButton: {
     position: 'fixed',
     bottom: theme.spacing(3),
@@ -473,6 +454,10 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
+
+interface ItemListProps {
+  items: Item[];
+}
 
 const formatarMoedaBrasileira = (valor: string) => {
   const numeroLimpo = valor.replace(/\D/g, '');
@@ -520,7 +505,7 @@ const useDebounce = (callback: Function, delay: number) => {
     if (debounceTimerRef.current) {
       clearTimeout(debounceTimerRef.current);
     }
-    
+
     debounceTimerRef.current = setTimeout(() => {
       callback(...args);
     }, delay);
@@ -529,32 +514,32 @@ const useDebounce = (callback: Function, delay: number) => {
 
 const useCpfCnpjSearch = () => {
   const [isLoading, setIsLoading] = useState(false);
-  
+
   const search = async (doc: string, target: keyof Item, setNewItem: React.Dispatch<React.SetStateAction<Item>>) => {
-    let tipo = '';
-    
+    let tipo = ''; // Define tipo here
+
     try {
       const cleaned = doc.replace(/\D/g, '');
       if (cleaned.length !== 11 && cleaned.length !== 14) return;
-      
+
       setIsLoading(true);
-      tipo = cleaned.length === 14 ? 'cnpj' : 'cpf';
-      
+      tipo = cleaned.length === 14 ? 'cnpj' : 'cpf'; // Set the value
+
       console.log(`Iniciando consulta de ${tipo.toUpperCase()}:`, cleaned);
-      
+
       const response = await fetch(`/api/${tipo}?${tipo}=${cleaned}`);
-      
+
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
         throw new Error(
           `Erro ${response.status} ao buscar ${tipo.toUpperCase()}: ${errorData.error || response.statusText}`
         );
       }
-      
+
       const data = await response.json();
-      
+
       console.log(`Resposta da consulta de ${tipo.toUpperCase()}:`, data);
-      
+
       if (data.nome) {
         setNewItem(prev => ({ ...prev, [target]: data.nome }));
       } else {
@@ -565,7 +550,8 @@ const useCpfCnpjSearch = () => {
         error: error instanceof Error ? error.message : 'Erro desconhecido',
         document: doc
       });
-      
+
+      // Mostra feedback para o usuário (opcional)
       if (error instanceof Error && error.message.includes('Erro 404')) {
         alert('Serviço de consulta temporariamente indisponível. Por favor, preencha o nome manualmente.');
       }
@@ -576,6 +562,7 @@ const useCpfCnpjSearch = () => {
 
   return { search, isLoading };
 };
+
 
 const tutorialSteps = [
   {
@@ -590,13 +577,13 @@ const tutorialSteps = [
   },
   {
     id: 'seller',
-    title: 'Identificação do Vendedor',
-    content: 'Insira o CPF do vendedor. Se válido, o nome será preenchido automaticamente. Caso contrário, preencha o Nome do Vendedor manualmente.',
+    title: 'Identificação do socio1',
+    content: 'Insira o CPF do socio1. Se válido, o nome será preenchido automaticamente. Caso contrário, preencha o Nome do socio1 manualmente.',
   },
   {
     id: 'buyer',
-    title: 'Identificação do Comprador',
-    content: 'Insira o CPF/CNPJ do comprador. Se válido, o nome é preenchido automaticamente. Insira o CEP para preenchimento automático de endereço, bairro, município e estado. Preencha manualmente se necessário.',
+    title: 'Identificação do empresa',
+    content: 'Insira o CPF/CNPJ do empresa. Se válido, o nome é preenchido automaticamente. Insira o CEP para preenchimento automático de endereço, bairro, município e estado. Preencha manualmente se necessário.',
   },
   {
     id: 'applicant',
@@ -606,7 +593,7 @@ const tutorialSteps = [
   {
     id: 'signature',
     title: 'Assinatura do Cliente',
-    content: 'Use o painel de assinatura para fornecer a assinatura digital do vendedor. Siga as instruções na tela.',
+    content: 'Use o painel de assinatura para fornecer a assinatura digital do socio1. Siga as instruções na tela.',
   },
   {
     id: 'documents',
@@ -624,7 +611,7 @@ const ListPost: React.FC<{ setItems: React.Dispatch<React.SetStateAction<Item[]>
   const classes = useStyles();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('xs'), { noSsr: true });
-  
+
   const [files, setFiles] = useState<File[]>([]);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [cameraOpen, setCameraOpen] = useState(false);
@@ -655,31 +642,49 @@ const ListPost: React.FC<{ setItems: React.Dispatch<React.SetStateAction<Item[]>
     placa: '',
     renavam: '',
     crv: '',
+    chassi: '',
+    cargo: '',
+    cargo2: '',
+    cargo3: '',
+    modelo: '',
     valordevenda: '',
-    nomevendedor: '',
-    cpfvendedor: '',
-    enderecovendedor: '',
-    complementovendedor: '',
-    municipiovendedor: '',
-    emailvendedor: 'b3certificacao@gmail.com',
-    bairrocomprador: '',
-    nomecomprador: '',
-    cpfcomprador: '',
-    enderecocomprador: '',
-    complementocomprador: '',
-    municipiocomprador: '',
-    emailcomprador: 'b3certificacao@gmail.com',
-    celtelcomprador: '',
-    cepvendedor: '',
-    cepcomprador: '',
+    nomesocio1: '',
+    cpfsocio1: '',
+    cpfsocio3: '',
+     nomesocio3: '',
+    enderecosocio1: '',
+    complementosocio1: '',
+    municipiosocio1: '',
+    emailsocio1: 'b3certificacao@gmail.com',
+    celtelsocio1: '',
+    cepsocio1: '',
+    nomesocio2: '',
+    cpfsocio2: '',
+    enderecosocio2: '',
+    complementosocio2: '',
+    municipiosocio2: '',
+    emailsocio2: 'b3certificacao@gmail.com',
+    celtelsocio2: '',
+    cepsocio2: '',
+    bairroempresa: '',
+    nomeempresa: '',
+    cpfempresa: '',
+    enderecoempresa: '',
+    complementoempresa: '',
+    municipioempresa: '',
+    emailempresa: 'b3certificacao@gmail.com',
+    celtelempresa: '',
+
+    cepempresa: '',
     tipo: '',
     cnpjempresa: '',
-    nomeempresa: '',
+
     dataCriacao: Timestamp.fromDate(new Date()),
-    celtelvendedor: '',
+
     signature: '',
   });
 
+  // Verifica se o tutorial já foi visto
   useEffect(() => {
     const hasSeenTutorial = localStorage.getItem('hasSeenTutorial');
     if (!hasSeenTutorial) {
@@ -695,6 +700,7 @@ const ListPost: React.FC<{ setItems: React.Dispatch<React.SetStateAction<Item[]>
     );
   };
 
+  // Camera handling
   useEffect(() => {
     if (cameraOpen) {
       startCamera();
@@ -732,11 +738,11 @@ const ListPost: React.FC<{ setItems: React.Dispatch<React.SetStateAction<Item[]>
     if (videoRef.current && canvasRef.current) {
       const context = canvasRef.current.getContext('2d');
       if (!context) return;
-      
+
       canvasRef.current.width = videoRef.current.videoWidth;
       canvasRef.current.height = videoRef.current.videoHeight;
       context.drawImage(videoRef.current, 0, 0, canvasRef.current.width, canvasRef.current.height);
-      
+
       canvasRef.current.toBlob((blob) => {
         if (blob) {
           const file = new File([blob], `photo-${Date.now()}.jpg`, { type: 'image/jpeg' });
@@ -747,6 +753,7 @@ const ListPost: React.FC<{ setItems: React.Dispatch<React.SetStateAction<Item[]>
     }
   };
 
+  // Image cropping
   const openCropDialog = (index: number) => {
     const file = files[index];
     const reader = new FileReader();
@@ -765,11 +772,11 @@ const ListPost: React.FC<{ setItems: React.Dispatch<React.SetStateAction<Item[]>
   const cropImage = async () => {
     try {
       if (!imageToCrop || currentImageIndex === null || !croppedAreaPixels) return;
-      
+
       const croppedImage = await getCroppedImg(imageToCrop, croppedAreaPixels);
       const blob = await fetch(croppedImage).then(r => r.blob());
       const file = new File([blob], `cropped-${Date.now()}.jpg`, { type: 'image/jpeg' });
-      
+
       setFiles(prev => prev.map((f, i) => i === currentImageIndex ? file : f));
       setCropOpen(false);
     } catch (e) {
@@ -785,10 +792,10 @@ const ListPost: React.FC<{ setItems: React.Dispatch<React.SetStateAction<Item[]>
       if (!data.erro) {
         setNewItem(prev => ({
           ...prev,
-          enderecocomprador: data.logradouro,
-          municipiocomprador: data.localidade,
-          bairrocomprador: data.bairro,
-          complementocomprador: data.uf,
+          enderecoempresa: data.logradouro,
+          municipioempresa: data.localidade,
+          bairroempresa: data.bairro,
+          complementoempresa: data.uf,
         }));
       } else {
         console.error('CEP não encontrado');
@@ -811,7 +818,7 @@ const ListPost: React.FC<{ setItems: React.Dispatch<React.SetStateAction<Item[]>
 
   const uploadFiles = async (): Promise<string[]> => {
     if (files.length === 0) return [];
-    
+
     setIsLoading(true);
     try {
       const uploadPromises = files.map(file => {
@@ -847,8 +854,8 @@ const ListPost: React.FC<{ setItems: React.Dispatch<React.SetStateAction<Item[]>
       if (field === 'valordevenda') {
         value = formatarMoedaBrasileira(value);
       }
-      
-      const camposCpfCnpj: (keyof Item)[] = ['cpfvendedor', 'cpfcomprador', 'cnpjempresa'];
+
+      const camposCpfCnpj: (keyof Item)[] = ['cpfsocio1','cpfsocio2','cpfsocio3', 'cpfempresa', 'cnpjempresa'];
       if (camposCpfCnpj.includes(field)) {
         const raw = value.replace(/\D/g, '');
         const formatado = formatCpfCnpj(raw);
@@ -861,17 +868,22 @@ const ListPost: React.FC<{ setItems: React.Dispatch<React.SetStateAction<Item[]>
 
         if (isValidCpfCnpj(raw)) {
           const target =
-            field === 'cpfvendedor'
-              ? 'nomevendedor'
-              : field === 'cpfcomprador'
-              ? 'nomecomprador'
+            field === 'cpfsocio1'
+              ? 'nomesocio1':
+               field === 'cpfsocio2'
+              ? 'nomesocio2'
+              :
+               field === 'cpfsocio3'
+              ? 'nomesocio3'
+              : field === 'cpfempresa'
+              ? 'nomeempresa'
               : 'nomeempresa';
-          
+
           debouncedSearch(raw, target, setNewItem);
         }
       }
 
-      if (field === 'cepcomprador' && value.replace(/\D/g, '').length === 8) {
+      if (field === 'cepempresa' && value.replace(/\D/g, '').length === 8) {
         fetchAddressFromCEP(value);
       }
 
@@ -881,22 +893,38 @@ const ListPost: React.FC<{ setItems: React.Dispatch<React.SetStateAction<Item[]>
     });
   };
 
+  const generatePreview = async () => {
+    const input = document.getElementById('pdf-content');
+    if (!input) return;
+
+    try {
+      const canvas = await html2canvas(input, { 
+        scale: isMobile ? 1.5 : 2,
+        useCORS: true,
+        logging: false
+      });
+      setPreviewImage(canvas.toDataURL('image/png'));
+    } catch (error) {
+      console.error('Erro ao gerar pré-visualização:', error);
+    }
+  };
+
   const formatDate = (date: string | Timestamp | undefined | null) => {
     if (!date) return 'Data inválida';
-  
+
     let localDate;
-  
+
     if (date instanceof Timestamp) {
       localDate = date.toDate();
     } else {
       localDate = new Date(date);
     }
-  
+
     if (isNaN(localDate.getTime())) return 'Data inválida';
-  
+
     const offsetMs = localDate.getTimezoneOffset() * 60000;
     const adjustedDate = new Date(localDate.getTime() - offsetMs - 3 * 3600000);
-  
+
     return format(adjustedDate, 'dd/MM/yyyy');
   };
 
@@ -906,11 +934,11 @@ const ListPost: React.FC<{ setItems: React.Dispatch<React.SetStateAction<Item[]>
         alert('ID do item não foi gerado corretamente. Por favor, recarregue a página.');
         return;
       }
-  
+
       setIsLoading(true);
-  
+
       const uploadedUrls = files.length > 0 ? await uploadFiles() : [];
-  
+
       const colecao = new Colecao();
       const itemParaSalvar = {
         ...newItem,
@@ -918,22 +946,23 @@ const ListPost: React.FC<{ setItems: React.Dispatch<React.SetStateAction<Item[]>
         dataCriacao: Timestamp.fromDate(new Date()),
         produtosSelecionados,
       };
-  
+
       console.log('Salvando item:', itemParaSalvar);
-  
-      const itemSalvo = await colecao.salvar('Betodespachanteintrncaodevendaoficial', itemParaSalvar);
-  
+
+      const itemSalvo = await colecao.salvar('Betodespachantetransferencia', itemParaSalvar);
+
       setItems(prev => [...prev, { ...itemParaSalvar, id: itemSalvo.id }]);
       const pdfURL = await generatePDF();
-  
-      const numeroWhatsApp = '5548988449379';
-      const servicos = produtosSelecionados.length > 0 ? produtosSelecionados.join(', ') : 'Nenhum serviço selecionado';
-      const mensagemInicial = `Olá! Tudo certo, o requerimento foi preenchido!\n\n📌 *Placa:* ${newItem.id}\n🛠️ *Serviços:* ${servicos}\n📄 *Documento:* ${pdfURL}`;
-      
-      window.location.href = `https://api.whatsapp.com/send?phone=${numeroWhatsApp}&text=${encodeURIComponent(mensagemInicial)}`;
-      
+
+      generatePDF().then((pdfURL) => {
+        if (pdfURL) {
+
+          console.log('PDF gerado:', pdfURL);
+        }
+      });
+
       resetForm();
-  
+
       setTimeout(() => {
         alert('Item adicionado com sucesso! Os dados foram salvos.');
       }, 5000);
@@ -944,41 +973,58 @@ const ListPost: React.FC<{ setItems: React.Dispatch<React.SetStateAction<Item[]>
       setIsLoading(false);
     }
   };
-  
+
   const resetForm = () => {
     setNewItem({
       id: '',
-      cliente: '',
-      status: 'Pendente',
-      quantidade: 0,
-      imagemUrls: [],
-      concluido: false,
-      placa: '',
-      renavam: '',
-      crv: '',
-      valordevenda: '',
-      nomevendedor: '',
-      cpfvendedor: '',
-      enderecovendedor: '',
-      complementovendedor: '',
-      municipiovendedor: '',
-      emailvendedor: 'b3certificacao@gmail.com',
-      bairrocomprador: '',
-      nomecomprador: '',
-      cpfcomprador: '',
-      enderecocomprador: '',
-      complementocomprador: '',
-      municipiocomprador: '',
-      emailcomprador: 'b3certificacao@gmail.com',
-      celtelcomprador: '',
-      cepvendedor: '',
-      cepcomprador: '',
-      tipo: '',
-      cnpjempresa: '',
-      nomeempresa: '',
-      dataCriacao: Timestamp.fromDate(new Date()),
-      celtelvendedor: '',
-      signature: '',
+    cliente: '',
+    status: 'Pendente',
+    quantidade: 0,
+    imagemUrls: [],
+    concluido: false,
+    placa: '',
+    renavam: '',
+    crv: '',
+    chassi: '',
+    cargo: '',
+    cargo2: '',
+    cargo3: '',
+    modelo: '',
+    valordevenda: '',
+    nomesocio1: '',
+    cpfsocio1: '',
+     cpfsocio3: '',
+    enderecosocio1: '',
+    complementosocio1: '',
+    municipiosocio1: '',
+    emailsocio1: 'b3certificacao@gmail.com',
+    celtelsocio1: '',
+    cepsocio1: '',
+    nomesocio2: '',
+    nomesocio3: '',
+    cpfsocio2: '',
+    enderecosocio2: '',
+    complementosocio2: '',
+    municipiosocio2: '',
+    emailsocio2: 'b3certificacao@gmail.com',
+    celtelsocio2: '',
+    cepsocio2: '',
+    bairroempresa: '',
+    nomeempresa: '',
+    cpfempresa: '',
+    enderecoempresa: '',
+    complementoempresa: '',
+    municipioempresa: '',
+    emailempresa: 'b3certificacao@gmail.com',
+    celtelempresa: '',
+
+    cepempresa: '',
+    tipo: '',
+    cnpjempresa: '',
+
+    dataCriacao: Timestamp.fromDate(new Date()),
+
+    signature: '',
     });
     setFiles([]);
     setPreviewImage(null);
@@ -988,27 +1034,27 @@ const ListPost: React.FC<{ setItems: React.Dispatch<React.SetStateAction<Item[]>
   const generatePDF = async (): Promise<string | null> => {
     const input = document.getElementById('pdf-content');
     if (!input) return null;
-  
+
     try {
       const canvas = await html2canvas(input, {
         scale: 2,
         useCORS: true,
         logging: false,
       });
-  
+
       const pdf = new jsPDF('p', 'mm', 'a4');
       const imgWidth = 210;
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
-  
+
       pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, imgWidth, imgHeight);
-  
+
       const blob = pdf.output('blob');
       const fileName = `Requerimento_${newItem.id}_${Date.now()}.pdf`;
       const pdfRef = ref(storage, `pdfs/${fileName}`);
-  
+
       await uploadBytes(pdfRef, blob);
       const pdfURL = await getDownloadURL(pdfRef);
-  
+
       return pdfURL;
     } catch (error) {
       console.error('Erro ao gerar PDF:', error);
@@ -1031,108 +1077,132 @@ const ListPost: React.FC<{ setItems: React.Dispatch<React.SetStateAction<Item[]>
 
   const handleReopenTutorial = () => {
     setShowTutorial(true);
-    setTutorialStep(0);
+    setTutorialStep(0); // Reinicia o tutorial do início
+  };
+   const renderSociosText = () => {
+    const socios = [];
+    if (newItem.nomesocio1) socios.push(`seu sócio administrador ${newItem.nomesocio1}`);
+    if (newItem.nomesocio2) socios.push(`seu sócio diretor ${newItem.nomesocio2}`);
+    if (newItem.nomesocio3) socios.push(`seu sócio ${newItem.nomesocio3}`);
+
+    if (socios.length === 0) return 'representado neste ato por seu representante legal';
+
+    return `representado neste ato por ${socios.join(', ')}`;
+  };
+
+ const renderSignatureBlocks = () => {
+    const blocks = [];
+
+    if (newItem.nomesocio1) {
+      blocks.push(
+        <div key="socio1" className={classes.signatureSection}>
+          {newItem.signature && (
+            <img src={newItem.signature} alt="Assinatura do Cliente" style={{ maxWidth: '300px' }} />
+          )}
+          <div className={classes.signatureBlock}>
+            Assinatura do sócio ou Responsável
+            <br />{newItem.nomesocio1}
+            <br />{newItem.cpfsocio1}
+            <br />{newItem.cargo}
+          </div>
+        </div>
+      );
+    }
+
+    if (newItem.nomesocio2) {
+      blocks.push(
+        <div key="socio2" className={classes.signatureSection}>
+          {newItem.signature && (
+            <img src={newItem.signature} alt="Assinatura do Cliente" style={{ maxWidth: '300px' }} />
+          )}
+          <div className={classes.signatureBlock}>
+            Assinatura do sócio ou Responsável
+            <br />{newItem.nomesocio2}
+            <br />{newItem.cpfsocio2}
+            <br />{newItem.cargo2}
+          </div>
+        </div>
+      );
+    }
+
+    return blocks;
   };
 
   return (
-    <div className={`${classes.formContainer} ${classes.noPrint}`}>
-      <Paper className={classes.formContainer}>
-        <div id="pdf-content" style={{ position: 'absolute', left: '-9999px', top: '-9999px' }}>
-          <Paper className={classes.paper}>
+    <>
+      <div className={classes.root}>
+        <Paper className={classes.formContainer}>
+          <div id="pdf-content" style={{ position: 'absolute', left: '-9999px', top: '-9999px' }}>
+            <Paper className={classes.paper}>
             <div className={classes.header2}>
-              <Typography className={classes.title1}>Estado de Santa Catarina</Typography>
-              <Typography className={classes.subtitle}>Secretaria de Estado de Segurança Pública</Typography>
-              <Typography className={classes.subtitle}>Departamento Estadual de Trânsito</Typography>
-              <Typography className={classes.subtitle}>Diretoria de Veículo</Typography>
+              <Typography component="h1" className={classes.title1}>Detran</Typography>
+              <Typography component="p" className={classes.subtitle}>Departamento Estadual de Trânsito</Typography>
             </div>
 
-            <Typography className={classes.title2} style={{ textAlign: 'center' }}>
-              Requerimento de Intenção de Venda
+            <Typography component="h2" className={classes.title2} style={{ textAlign: 'center' }}>
+              Termo de Anuência 
             </Typography>
 
-            <Typography className={classes.sectionTitle2}>Identificação do Veículo</Typography>
-            <Typography className={classes.field}><strong>Placa:</strong> {newItem.id}</Typography>
-            <Typography className={classes.field}><strong>Renavam:</strong> {newItem.renavam}</Typography>
-            <Typography className={classes.field}><strong>CRV:</strong> {newItem.crv}</Typography>
-            <Typography className={classes.field}><strong>Valor de Venda:</strong> R$ {newItem.valordevenda}</Typography>
-
-            <Typography className={classes.sectionTitle2}>Identificação do Vendedor</Typography>
-            <Typography className={classes.field}><strong>Nome:</strong> {newItem.nomevendedor}</Typography>
-            <Typography className={classes.field}><strong>CPF/CNPJ:</strong> {newItem.cpfvendedor}</Typography>
-            <Typography className={classes.field}><strong>E-mail:</strong> {newItem.emailvendedor}</Typography>
-
-            <Typography className={classes.sectionTitle2}>Identificação do Comprador</Typography>
-            <Typography className={classes.field}><strong>Nome:</strong> {newItem.nomecomprador}</Typography>
-            <Typography className={classes.field}><strong>CPF/CNPJ:</strong> {newItem.cpfcomprador}</Typography>
-            <Typography className={classes.field}><strong>CEP:</strong> {newItem.cepcomprador}</Typography>
-            <Typography className={classes.field}><strong>Endereço:</strong> {newItem.enderecocomprador}</Typography>
-            <Typography className={classes.field}><strong>Bairro:</strong> {newItem.bairrocomprador}</Typography>
-            <Typography className={classes.field}><strong>Município:</strong> {newItem.municipiocomprador}</Typography>
-            <Typography className={classes.field}><strong>Estado:</strong> {newItem.complementocomprador}</Typography>
-            <Typography className={classes.field}><strong>E-mail:</strong> {newItem.emailcomprador}</Typography>
-            <Typography className={classes.field}><strong>CEL/TEL:</strong> {newItem.celtelcomprador}</Typography>
-
-            <Typography className={classes.field2} style={{ marginTop: '20px' }}>
-              Eu <strong>VENDEDOR</strong>, com base na Resolução do CONTRAN nº 809, de 15 de dezembro 2020,
-              informo ao Departamento Estadual de Trânsito de Santa Catarina (DETRAN-SC) a,
-              <strong>INTENÇÃO DE VENDA</strong> em {formatDate(newItem.dataCriacao)}, para o <strong>COMPRADOR</strong> conforme indicado acima.
+            <Typography component="div" className={classes.field2} style={{ marginTop: '20px' }}>
+              A <strong>empresa</strong>, {newItem.nomeempresa}, inscrita no CNPJ sob o nº, {newItem.cnpjempresa}, com sede localizada à 
+              <br /><strong>CEP:</strong> {newItem.cepempresa}
+              <br /><strong>Endereço:</strong> {newItem.enderecoempresa}
+              <br /><strong>Bairro:</strong> {newItem.bairroempresa}
+              <br /><strong>Município:</strong> {newItem.municipioempresa}
+              <br /><strong>Estado:</strong> {newItem.complementoempresa}, {renderSociosText()}, vem por meio deste, declarar que está ciente e anuente com a solicitação de baixa permanente do veículo de sua propriedade, conforme dados abaixo:
+              <Typography component="div" className={classes.field}><strong>Placa:</strong> {newItem.id}</Typography>
+              <Typography component="div" className={classes.field}><strong>Modelo:</strong> {newItem.modelo}</Typography>
+              <Typography component="div" className={classes.field}><strong>Chassi:</strong> {newItem.chassi}</Typography>
+              <Typography component="div" className={classes.field}><strong>Renavam:</strong> {newItem.renavam}</Typography>
             </Typography>
 
-            {newItem.signature && (
-              <div className={classes.signatureSection}>
-                <img src={newItem.signature} alt="Assinatura do Cliente" style={{ maxWidth: '300px' }} />
-              </div>
-            )}
-
-            <div className={classes.signatureSection}>
-              <div className={classes.signatureBlock}>
-                Assinatura do Vendedor ou Responsável
-              </div>
-            </div>
-
-            <Typography className={classes.sectionTitle4}>b3certificacao@gmail.com</Typography>
-            <Typography className={classes.sectionTitle3}>Documentação Básica</Typography>
-            <Typography className={classes.field3}>Pessoa Física: Cópia da CNH ou RG/CPF</Typography>
-            <Typography className={classes.field3}>Pessoa Jurídica: Cópia do ato constitutivo e Cartão CNPJ</Typography>
-            <Typography className={classes.field3}>
-              Obs: Cópia autenticada de procuração e cópia da CNH ou RG/CPF do procurador caso solicitado por terceiro.
+            <Typography component="div" className={classes.field2} style={{ marginTop: '20px' }}>
+              A empresa declara ainda que a baixa do referido veículo será realizada conforme as normas e procedimentos vigentes estabelecidos pelo DETRAN/SC, 
+              estando ciente de que, uma vez efetuada a baixa permanente, o veículo não poderá retornar à circulação.
+              <br /><strong>Nestes termos, pede deferimento.</strong>
+              <br /><strong>Município:</strong> {newItem.municipioempresa} em {formatDate(newItem.dataCriacao)}, para o <strong>empresa</strong> conforme indicado acima.
             </Typography>
+
+            {renderSignatureBlocks()}
+
+            <Typography component="div" className={classes.sectionTitle4}>b3certificacao@gmail.com</Typography>
           </Paper>
         </div>
 
         <div className={classes.header}>
           <img src="/betologo.jpg" alt="Logo" className={classes.logo} />
-          <Typography variant="h4" className={classes.title}>
-            Requerimento de Intenção de Venda
+          <Typography variant="h4" component="h1" className={classes.title}>
+            Termo de Anuência 
           </Typography>
         </div>
-  
-        <Grid container spacing={3}>
-          <Grid item xs={12}>
-            <Typography variant="h6" className={classes.sectionTitle}>Selecione os Serviços Desejados</Typography>
-            <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
-              {['ATPV', 'Assinatura', 'Comunicação de Venda'].map((produto) => (
-                <Button
-                  key={produto}
-                  variant={produtosSelecionados.includes(produto) ? 'contained' : 'outlined'}
-                  color="primary"
-                  onClick={() => toggleProduto(produto)}
-                  className={classes.button}
-                >
-                  {produto}
-                </Button>
-              ))}
-            </div>
-          </Grid>
 
+
+        <Grid container spacing={3}>
+
+        <Grid item xs={12}>
+  <Typography variant="h6" className={classes.sectionTitle}>Selecione os Serviços Desejados</Typography>
+  <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+    {['TRANSFERÊNCIA', 'SEGUNDA VIA', ' LICENCIAMENT', 'ALTERAÇÃO DE DADOS' ].map((produto) => (
+      <Button
+        key={produto}
+        variant={produtosSelecionados.includes(produto) ? 'contained' : 'outlined'}
+        color="primary"
+        onClick={() => toggleProduto(produto)}
+        className={classes.button}
+      >
+        {produto}
+      </Button>
+    ))}
+  </div>
+</Grid>
+          {/* Seção Veículo */}
           <Grid item xs={12} md={3}>
             <Typography variant="h6" className={classes.sectionTitle}>Identificação Do Veículo</Typography>
             {(
               [
                 { label: 'Placa', value: 'id' },
-                { label: 'Renavam', value: 'renavam' },
-                { label: 'CRV', value: 'crv' },
-                { label: 'Valor de Venda', value: 'valordevenda', type: 'text' },
+             
+
               ] as Array<{ label: string; value: keyof Item; type?: string }>
             ).map((field) => (
               <TextField
@@ -1149,82 +1219,11 @@ const ListPost: React.FC<{ setItems: React.Dispatch<React.SetStateAction<Item[]>
               />
             ))}
           </Grid>
-  
-          <Grid item xs={12} md={3}>
-            <Typography variant="h6" className={classes.sectionTitle}>Identificação Do Vendedor</Typography>
-            <TextField
-              name="cpfvendedor"
-              label="CPF"
-              value={formatCpfCnpj(newItem.cpfvendedor || '')}
-              onChange={(e) => {
-                const rawValue = e.target.value.replace(/\D/g, '');
-                handleInputChange({
-                  ...e,
-                  target: {
-                    ...e.target,
-                    name: 'cpfvendedor',
-                    value: rawValue
-                  }
-                }, 'cpfvendedor');
-              }}
-              fullWidth
-              variant="outlined"
-              className={classes.textField}
-              margin="normal"
-              error={!!newItem.cpfvendedor && !isValidCpfCnpj(newItem.cpfvendedor)}
-              helperText={!!newItem.cpfvendedor && !isValidCpfCnpj(newItem.cpfvendedor)
-                ? 'CPF inválido'
-                : ''}
-              InputProps={{
-                endAdornment: isLoadingSearch && newItem.cpfvendedor?.length === 11 ? (
-                  <CircularProgress size={24} />
-                ) : null,
-              }}
-            />
-  
-            <TextField
-              label="Nome do Vendedor"
-              value={newItem.nomevendedor || ''}
-              onChange={(e) => handleInputChange(e, 'nomevendedor')}
-              fullWidth
-              variant="outlined"
-              className={classes.textField}
-              margin="normal"
-              helperText="Preencha manualmente se a consulta automática falhar"
-            />
-          </Grid>
-  
-          <Grid item xs={12} md={6} lg={3}>
-            <Typography variant="h6" className={classes.sectionTitle}>Identificação do Comprador</Typography>
-            {(
-              [
-                { label: 'CPF', value: 'cpfcomprador' },
-                { label: 'NOME', value: 'nomecomprador' },
-                { label: 'CEP', value: 'cepcomprador' },
-                { label: 'ENDEREÇO/NUMERO', value: 'enderecocomprador' },
-                { label: 'BAIRRO', value: 'bairrocomprador' },
-                { label: 'MUNICÍPIO', value: 'municipiocomprador' },
-                { label: 'ESTADO', value: 'complementocomprador' },
-                { label: 'CEL/TEL', value: 'celtelcomprador' },
-              ] as Array<{ label: string; value: keyof Item }>
-            ).map((field) => (
-              <TextField
-                key={field.value}
-                name={field.value}
-                label={field.label}
-                value={newItem[field.value] || ''}
-                onChange={(e) => handleInputChange(e, field.value)}
-                fullWidth
-                variant="outlined"
-                className={classes.textField}
-                margin="normal"
-              />
-            ))}
-          </Grid>
-  
+
+          
           <Grid item xs={12} md={3}>
             <Typography variant="h6" className={classes.sectionTitle}>Solicitante</Typography>
-  
+
             <TextField
               name="cnpjempresa"
               label="CPF/CNPJ"
@@ -1254,7 +1253,7 @@ const ListPost: React.FC<{ setItems: React.Dispatch<React.SetStateAction<Item[]>
                 ) : null,
               }}
             />
-  
+
             <TextField
               label="Nome"
               value={newItem.nomeempresa || ''}
@@ -1265,16 +1264,9 @@ const ListPost: React.FC<{ setItems: React.Dispatch<React.SetStateAction<Item[]>
               margin="normal"
             />
           </Grid>
-  
-          <Grid item xs={12}>
-            <div className={classes.signatureContainer}>
-              <Typography variant="h6" className={classes.sectionTitle}>
-                Assinatura do Cliente
-              </Typography>
-              <SignaturePad onSave={(signature) => setNewItem(prev => ({ ...prev, signature }))} />
-            </div>
-          </Grid>
-  
+
+
+          {/* Seção Documentos */}
           <Grid item xs={12}>
             <Typography variant="h6" className={classes.sectionTitle}>
               Anexar Documentos (Opcional)
@@ -1282,7 +1274,7 @@ const ListPost: React.FC<{ setItems: React.Dispatch<React.SetStateAction<Item[]>
             <Typography variant="h6" className={classes.sectionTitle}>
               Ex:Procuração...
             </Typography>
-            
+
             <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
               <input
                 accept="image/*"
@@ -1302,7 +1294,7 @@ const ListPost: React.FC<{ setItems: React.Dispatch<React.SetStateAction<Item[]>
                   Selecionar Arquivos
                 </Button>
               </label>
-              
+
               <Button
                 variant="contained"
                 className={`${classes.button} ${classes.cameraButton}`}
@@ -1312,7 +1304,8 @@ const ListPost: React.FC<{ setItems: React.Dispatch<React.SetStateAction<Item[]>
                 Tirar Foto
               </Button>
             </div>
-  
+
+            {/* Miniaturas */}
             {files.length > 0 && (
               <div className={classes.thumbnailContainer}>
                 {files.map((file, index) => (
@@ -1337,7 +1330,8 @@ const ListPost: React.FC<{ setItems: React.Dispatch<React.SetStateAction<Item[]>
               </div>
             )}
           </Grid>
-  
+
+          {/* Pré-visualização */}
           {previewImage && (
             <Grid item xs={12}>
               <div className={classes.previewContainer}>
@@ -1349,7 +1343,8 @@ const ListPost: React.FC<{ setItems: React.Dispatch<React.SetStateAction<Item[]>
             </Grid>
           )}
         </Grid>
-  
+
+        {/* Botões de ação */}
         <div className={classes.actionBar}>
           <Button
             onClick={handleAddItem}
@@ -1362,7 +1357,8 @@ const ListPost: React.FC<{ setItems: React.Dispatch<React.SetStateAction<Item[]>
           </Button>
         </div>
       </Paper>
-  
+
+      {/* Modal Câmera */}
       <Dialog open={cameraOpen} onClose={() => setCameraOpen(false)} maxWidth="md" fullWidth>
         <DialogTitle>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -1399,7 +1395,8 @@ const ListPost: React.FC<{ setItems: React.Dispatch<React.SetStateAction<Item[]>
           </Button>
         </DialogActions>
       </Dialog>
-  
+
+      {/* Modal Recorte */}
       <Dialog open={cropOpen} onClose={() => setCropOpen(false)} maxWidth="md" fullWidth>
         <DialogTitle>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -1477,8 +1474,8 @@ const ListPost: React.FC<{ setItems: React.Dispatch<React.SetStateAction<Item[]>
           </Button>
         </DialogActions>
       </Dialog>
-
-      <Tooltip title="Reabrir Tutorial">
+        {/* Botão flutuante para reabrir o tutorial */}
+        <Tooltip title="Reabrir Tutorial">
         <Fab
           className={classes.fabButton}
           onClick={handleReopenTutorial}
@@ -1486,7 +1483,8 @@ const ListPost: React.FC<{ setItems: React.Dispatch<React.SetStateAction<Item[]>
           <HelpOutline />
         </Fab>
       </Tooltip>
-    </div>
+      </div>
+    </>
   );
 };
 
