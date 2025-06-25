@@ -576,24 +576,9 @@ const tutorialSteps = [
     content: 'Preencha os dados do veículo: Placa (ex.: ABC1234), Renavam, CRV, e Valor de Venda (ex.: 50000, formatado como 50.000,00).',
   },
   {
-    id: 'seller',
-    title: 'Identificação do socio1',
-    content: 'Insira o CPF do socio1. Se válido, o nome será preenchido automaticamente. Caso contrário, preencha o Nome do socio1 manualmente.',
-  },
-  {
-    id: 'buyer',
-    title: 'Identificação do empresa',
-    content: 'Insira o CPF/CNPJ do empresa. Se válido, o nome é preenchido automaticamente. Insira o CEP para preenchimento automático de endereço, bairro, município e estado. Preencha manualmente se necessário.',
-  },
-  {
     id: 'applicant',
     title: 'Solicitante',
     content: 'Insira o CPF/CNPJ do responsável (pessoa física ou jurídica). Se válido, o nome é preenchido automaticamente. Caso contrário, preencha o Nome manualmente.',
-  },
-  {
-    id: 'signature',
-    title: 'Assinatura do Cliente',
-    content: 'Use o painel de assinatura para fornecer a assinatura digital do socio1. Siga as instruções na tela.',
   },
   {
     id: 'documents',
@@ -602,7 +587,7 @@ const tutorialSteps = [
   },
   {
     id: 'submit',
-    title: 'Enviar Requerimento',
+    title: 'Enviar Arquivos',
     content: 'Revise os dados e clique em "Enviar Requerimento". Aguarde 5 segundos para a confirmação de salvamento.',
   },
 ];
@@ -1140,7 +1125,7 @@ const ListPost: React.FC<{ setItems: React.Dispatch<React.SetStateAction<Item[]>
             </div>
 
             <Typography component="h2" className={classes.title2} style={{ textAlign: 'center' }}>
-              Termo de Anuência 
+              Banco De Arquivos Veiculares
             </Typography>
 
             <Typography component="div" className={classes.field2} style={{ marginTop: '20px' }}>
@@ -1172,7 +1157,7 @@ const ListPost: React.FC<{ setItems: React.Dispatch<React.SetStateAction<Item[]>
         <div className={classes.header}>
           <img src="/betologo.jpg" alt="Logo" className={classes.logo} />
           <Typography variant="h4" component="h1" className={classes.title}>
-            Termo de Anuência 
+           Banco De Arquivos Veiculares
           </Typography>
         </div>
 
