@@ -15,8 +15,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { servicos, categorias } from '../../data/servicos';
 
 const useStyles = makeStyles((theme) => ({
-  root: { minHeight: '100vh', background: 'linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%)' },
-  searchContainer: { background: '#fff', borderRadius: theme.spacing(2), padding: theme.spacing(3), marginBottom: theme.spacing(4), boxShadow: '0 4px 20px rgba(0,0,0,0.1)' },
+  root: { minHeight: '100vh', backgroundColor: 'rgba(0, 0, 0, 0)' },
+  searchContainer: { background: '#fff', borderRadius: theme.spacing(2), padding: theme.spacing(1), marginBottom: theme.spacing(1), boxShadow: '0 4px 20px rgba(0,0,0,0.1)' },
   searchInput: {
     '& .MuiOutlinedInput-root': {
       borderRadius: theme.spacing(2), backgroundColor: '#f9fafb',
@@ -82,7 +82,9 @@ const Servicos: React.FC = () => {
 
   return (
     <Box className={classes.root}>
-      <Container maxWidth="xl" style={{ padding: '24px' }}>
+      <Container maxWidth="xl" style={{ padding: '14px', backgroundColor: 'rgba(0, 0, 0, 0)' }}>
+
+
         <Paper className={classes.searchContainer}>
           <TextField
             fullWidth
