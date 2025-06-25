@@ -40,11 +40,12 @@ import {
   FaCreditCard,
   FaPlane
 } from 'react-icons/fa';
+import Servicos from '@/pages/servicosland/index';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     minHeight: '100vh',
-    background: 'linear-gradient(135deg, #0f172a 0%, #1a2e25 25%, #1f4033 75%, #1f4033 100%)',
+    background: 'linear-gradient(145deg, #dce3f4 -10%, #c6e5d9 25%, #b3f0d0 75%, #b3f0d0 100%)',
     padding: theme.spacing(-9),
     position: 'relative',
     overflow: 'hidden',
@@ -402,104 +403,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const services = [
-  {
-    id: 1017,
-    nome: "ADESIVO ANTT",
-    categoria: "Serviços de ANTT",
-    icon: <FaTruck />,
-    valor: "20,00",
-    tipo: "TAXAS"
-  },
-  {
-    id: 1093,
-    nome: "VISTORIA CARRO",
-    categoria: "Vistorias",
-    icon: <FaSearch />,
-    valor: "240,00",
-    tipo: "TAXAS"
-  },
-  {
-    id: 1001,
-    nome: "TRANSFERÊNCIA",
-    categoria: "Transferências",
-    icon: <FaExchangeAlt />,
-    valor: "350,00",
-    tipo: "TAXAS"
-  },
-  {
-    id: 1002,
-    nome: "PRIMEIRA CNH",
-    categoria: "CNH",
-    icon: <FaIdCard />,
-    valor: "680,00",
-    tipo: "TAXAS"
-  },
-  {
-    id: 1003,
-    nome: "RENOVAÇÃO CNH",
-    categoria: "CNH",
-    icon: <FaClipboardCheck />,
-    valor: "280,00",
-    tipo: "TAXAS"
-  },
-  {
-    id: 1004,
-    nome: "LICENCIAMENTO",
-    categoria: "Licenciamento",
-    icon: <FaFileAlt />,
-    valor: "150,00",
-    tipo: "TAXAS"
-  },
-  {
-    id: 1005,
-    nome: "SEGUNDA VIA CRLV",
-    categoria: "Documentos",
-    icon: <FaReceipt />,
-    valor: "95,00",
-    tipo: "TAXAS"
-  },
-  {
-    id: 1006,
-    nome: "MUDANÇA CNH",
-    categoria: "CNH",
-    icon: <FaUserPlus />,
-    valor: "420,00",
-    tipo: "TAXAS"
-  },
-  {
-    id: 1007,
-    nome: "ATPV",
-    categoria: "Transporte",
-    icon: <FaShieldAlt />,
-    valor: "580,00",
-    tipo: "TAXAS"
-  },
-  {
-    id: 1008,
-    nome: "ANUÊNCIA",
-    categoria: "Anuências",
-    icon: <FaClipboardCheck />,
-    valor: "320,00",
-    tipo: "OUTRAS DESPESAS"
-  },
-  {
-    id: 1009,
-    nome: "COMUNICAÇÃO VENDA",
-    categoria: "Transferências",
-    icon: <FaExchangeAlt />,
-    valor: "45,00",
-    tipo: "TAXAS"
-  },
-  {
-    id: 1010,
-    nome: "VISTORIA MOTO",
-    categoria: "Vistorias",
-    icon: <FaMotorcycle />,
-    valor: "180,00",
-    tipo: "TAXAS"
-  }
-];
+
 
 const credentials = [
   {
@@ -647,7 +551,7 @@ export default function Home() {
                 <motion.div variants={fadeInUp}>
                   <Typography className={classes.subtitle}>
                     {isXs 
-                      ? "Meio século de experiência e tradição em documentação veicular"
+                      ? "Precisa parcelar seu documento? Parcelamos qualquer valor em até 18x no cartão!"
                       : isMobile 
                       ? "20+ anos de experiência em documentação veicular digital e segura"
                       : "Meio século de experiência, tradição e excelência. Especialista certificado em documentação veicular com atendimento 100% digital e personalizado."
@@ -678,46 +582,14 @@ export default function Home() {
 
                 <Divider className={classes.divider} />
 
-                {/* Serviços Organizados */}
-                <motion.div 
-                  className={classes.servicesGrid}
-                  variants={staggerContainer}
-                >
-                  {services.map((service, index) => (
-                    <motion.div
-                      key={service.id}
-                      variants={serviceCardAnimation}
-                      initial="hidden"
-                      animate="visible"
-                      whileHover="hover"
-                      transition={{ delay: 0.3 + index * 0.1 }}
-                    >
-                      <div className={classes.serviceCard}>
-                        <motion.div 
-                          className={classes.serviceIcon}
-                          whileHover={{ 
-                            scale: 1.2,
-                            rotate: 10,
-                            color: "#fff"
-                          }}
-                          transition={{ duration: 0.3 }}
-                        >
-                          {service.icon}
-                        </motion.div>
-                        <Typography className={classes.serviceTitle}>
-                          {service.nome}
-                        </Typography>
-                        <Typography className={classes.servicePrice}>
-                          R$ {service.valor}
-                        </Typography>
-                      </div>
-                    </motion.div>
-                  ))}
+              
+                  <motion.div variants={fadeInUp}>  
+                              
                 </motion.div>
               </motion.div>
 
          
-
+              <Servicos />
               {/* Botões de Ação */}
               <motion.div variants={fadeInUp} className={classes.ctaContainer}>
                 <motion.div
@@ -753,7 +625,7 @@ export default function Home() {
             </motion.div>
           </Container>
         </section>
-
+      
         {/* Floating WhatsApp Button */}
         <motion.div
           animate={{
