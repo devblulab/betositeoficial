@@ -56,44 +56,93 @@ Nunca deixe perguntas sem resposta e, sempre que possível, antecipe soluções.
 
 const useStyles = makeStyles((theme: Theme) => ({
   chatContainer: {
-    position: 'relative',
-    zIndex: 100,
-    margin: '20px auto',
-    maxWidth: '800px',
-    padding: '0 16px',
+    position: 'fixed',
+    bottom: '20px',
+    right: '20px',
+    zIndex: 1000,
     [theme.breakpoints.down('sm')]: {
-      margin: '10px auto',
-      padding: '0 8px',
+      bottom: '15px',
+      right: '15px',
     },
   },
   chatButton: {
     background: 'linear-gradient(135deg, #1a4a3a 0%, #2d6b55 100%)',
     color: '#ffffff',
-    width: '100%',
-    height: '80px',
-    boxShadow: '0 8px 32px rgba(26, 74, 58, 0.3)',
+    width: '60px',
+    height: '60px',
+    borderRadius: '50%',
+    boxShadow: '0 4px 20px rgba(26, 74, 58, 0.4)',
     transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-    border: '2px solid rgba(199, 174, 129, 0.2)',
-    borderRadius: '20px',
+    border: 'none',
     animation: '$pulse 2s infinite',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: '16px',
-    fontSize: '1.2rem',
-    fontWeight: 600,
-    textTransform: 'none',
-    fontFamily: '"Playfair Display", "Georgia", serif',
+    minWidth: 'auto',
+    position: 'relative',
     '&:hover': {
       background: 'linear-gradient(135deg, #2d6b55 0%, #1a4a3a 100%)',
-      transform: 'translateY(-2px)',
-      boxShadow: '0 12px 40px rgba(26, 74, 58, 0.4)',
+      transform: 'scale(1.1)',
+      boxShadow: '0 6px 25px rgba(26, 74, 58, 0.5)',
       animation: 'none',
     },
+    '&::before': {
+      content: '""',
+      position: 'absolute',
+      top: '-2px',
+      left: '-2px',
+      right: '-2px',
+      bottom: '-2px',
+      borderRadius: '50%',
+      background: 'linear-gradient(45deg, #4a7c59, #2d6b55)',
+      zIndex: -1,
+      opacity: 0,
+      transition: 'opacity 0.3s ease',
+    },
+    '&:hover::before': {
+      opacity: 1,
+    },
     [theme.breakpoints.down('sm')]: {
-      height: '70px',
-      fontSize: '1rem',
-      gap: '12px',
+      width: '55px',
+      height: '55px',
+    },
+  },
+  chatBubble: {
+    position: 'absolute',
+    top: '-45px',
+    right: '0',
+    background: '#ffffff',
+    color: '#1a4a3a',
+    padding: '8px 12px',
+    borderRadius: '16px 16px 4px 16px',
+    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+    fontSize: '14px',
+    fontWeight: 500,
+    whiteSpace: 'nowrap',
+    opacity: 0,
+    transform: 'translateY(10px) scale(0.9)',
+    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+    pointerEvents: 'none',
+    fontFamily: '"Playfair Display", "Georgia", serif',
+    '&::after': {
+      content: '""',
+      position: 'absolute',
+      bottom: '-6px',
+      right: '15px',
+      width: 0,
+      height: 0,
+      borderLeft: '6px solid transparent',
+      borderRight: '6px solid transparent',
+      borderTop: '6px solid #ffffff',
+    },
+    '$chatButton:hover &': {
+      opacity: 1,
+      transform: 'translateY(0) scale(1)',
+    },
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '12px',
+      padding: '6px 10px',
+      top: '-40px',
     },
   },
   '@keyframes pulse': {
@@ -127,13 +176,27 @@ const useStyles = makeStyles((theme: Theme) => ({
       width: '95vw',
       maxHeight: '80vh',
       overflow: 'hidden',
+      position: 'fixed',
       [theme.breakpoints.down('sm')]: {
-        width: '100vw',
-        height: '100vh',
-        maxHeight: '100vh',
-        maxWidth: '100vw',
+        bottom: '80px',
+        right: '15px',
+        top: 'auto',
+        left: 'auto',
+        width: 'calc(100vw - 30px)',
+        height: '70vh',
+        maxHeight: '70vh',
+        maxWidth: 'calc(100vw - 30px)',
         margin: 0,
-        borderRadius: 0,
+        borderRadius: '16px',
+        transform: 'none !important',
+      },
+      [theme.breakpoints.up('sm')]: {
+        bottom: '90px',
+        right: '20px',
+        top: 'auto',
+        left: 'auto',
+        transform: 'none !important',
+        margin: 0,
       },
     },
   },
@@ -439,28 +502,18 @@ const ChatBot: React.FC = () => {
     <>
       <Box className={classes.chatContainer}>
         <Zoom in={true} timeout={1000}>
-          <Button
-            className={classes.chatButton}
-            onClick={() => setIsOpen(true)}
-            variant="contained"
-            startIcon={<ChatIcon fontSize="large" />}
-          >
-            <Box textAlign="center">
-              <Typography variant="h6" component="div" style={{ 
-                fontWeight: 700,
-                fontFamily: '"Playfair Display", "Georgia", serif',
-                marginBottom: '4px'
-              }}>
-                💬 Fale com a Lívia
-              </Typography>
-              <Typography variant="caption" style={{ 
-                opacity: 0.9,
-                fontSize: '0.85rem'
-              }}>
-                Sua assistente inteligente está aqui para te ajudar!
-              </Typography>
+          <Box position="relative">
+            <Box className={classes.chatBubble}>
+              Olá! Precisa de ajuda?
             </Box>
-          </Button>
+            <Button
+              className={classes.chatButton}
+              onClick={() => setIsOpen(true)}
+              variant="contained"
+            >
+              <ChatIcon style={{ fontSize: '28px' }} />
+            </Button>
+          </Box>
         </Zoom>
       </Box>
 
