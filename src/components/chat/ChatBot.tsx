@@ -379,7 +379,7 @@ const ChatBot: React.FC = () => {
   }, [isOpen, messages.length]);
 
   const handleWhatsAppContact = (service: string) => {
-    const phoneNumber = "554832550606"; // Número do WhatsApp do Beto Dheon
+    const phoneNumber = "554832550606"; // Número do WhatsApp do Beto Dehon
     let message = "";
 
     switch (service) {
@@ -543,7 +543,7 @@ const ChatBot: React.FC = () => {
                 fontWeight: 500,
                 fontSize: '0.75rem'
               }}>
-                Despachante Beto Dheon
+                Despachante Beto Dehon
               </Typography>
             </Box>
           </Box>
