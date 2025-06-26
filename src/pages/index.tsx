@@ -482,10 +482,10 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Despachante Beto Dheon | 50+ Anos de Experiência | Documentação Veicular Digital</title>
+        <title>Despachante Beto Dehon | 20+ Anos de Experiência | Documentação Veicular Digital</title>
         <meta
           name="description"
-          content="Despachante Beto Dheon - Mais de 50 anos de experiência em documentação veicular. Atendimento profissional, ágil e 100% digital em Tubarão/SC. Especialista certificado."
+          content="Despachante Beto Dehon - Mais de 20 anos de experiência em documentação veicular. Atendimento profissional, ágil e 100% digital em Tubarão/SC. Especialista certificado."
         />
         <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
         <meta charSet="utf-8" />
@@ -508,7 +508,7 @@ export default function Home() {
                 <div className={classes.logoContainer}>
                   <motion.img 
                     src="/betologo.jpg" 
-                    alt="Despachante Beto Dheon" 
+                    alt="Despachante Beto Dehon" 
                     className={classes.logo}
                     variants={scaleIn}
                     whileHover={{ scale: 1.1, rotate: 5 }}
@@ -543,7 +543,7 @@ export default function Home() {
                       ease: "linear"
                     }}
                   >
-                    {isXs ? "Beto Dheon" : "Despachante Beto Dheon"}
+                    {isXs ? "Beto Dehon" : "Despachante Beto Dehon"}
                   </motion.h1>
                 </motion.div>
 
@@ -554,7 +554,7 @@ export default function Home() {
                       ? "Precisa parcelar seu documento? Parcelamos qualquer valor em até 18x no cartão!"
                       : isMobile 
                       ? "20+ anos de experiência em documentação veicular digital e segura"
-                      : "Meio século de experiência, tradição e excelência. Especialista certificado em documentação veicular com atendimento 100% digital e personalizado."
+                      : "Meio século de experiência, tradição e excelência. Especialista certificado em documentação veicular com atendimento 100% digital e personalizado. Parcelamos qualquer valor em até 18x no cartão!"
                     }
                   </Typography>
                 </motion.div>
@@ -599,7 +599,7 @@ export default function Home() {
                   <Button
                     className={classes.primaryButton}
                     startIcon={<FaWhatsapp />}
-                    href="https://wa.me/5548999999999"
+                    href="https://wa.me/5548988449379"
                     target="_blank"
                     rel="noopener"
                   >
@@ -640,7 +640,7 @@ export default function Home() {
         >
           <Fab
             className={classes.floatingButton}
-            href="https://wa.me/5548999999999"
+            href="https://wa.me/5548988449379"
             target="_blank"
             rel="noopener"
             aria-label="Contato WhatsApp Especializado"
