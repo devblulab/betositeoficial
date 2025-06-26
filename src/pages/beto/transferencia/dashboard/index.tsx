@@ -14,9 +14,8 @@ import {
   Phone, Email, Person, DirectionsCar
 } from '@material-ui/icons';
 import { Timestamp } from 'firebase/firestore';
-import {Thumbnails }from '@/components/enterprises/betodespa/requerimento/thumbnails';
-
-
+import {Thumbnails} from '@/components/enterprises/betodespa/transferencia/thumbnails';
+import { query, where } from 'firebase/firestore';
 
 // Configuração do Firebase
 const db = getFirestore(app);
@@ -558,7 +557,7 @@ const DashboardHeader: React.FC<{ stats: Stats; onFilterChange: (filter: string)
   return (
     <Paper className={classes.dashboardHeader}>
       <Typography className={classes.headerTitle}>
-        Dashboard Banco De Arquivos Veiculares
+        Dashboard Beto Dheon
       </Typography>
       <Typography variant="body2" style={{ textAlign: 'center', opacity: 0.9, marginBottom: 16 }}>
         Gestão de Documentos Veiculares
@@ -974,12 +973,21 @@ const Dashboard = () => {
     return () => unsubscribe();
   }, []);
 
-  const handleStatusUpdate = async (id: string, status: string) => {
+  const handleStatusUpdate = async (idInterno: string, novoStatus: string) => {
     try {
-      const docRef = doc(db, 'Betodespachantetransferencia', id);
-      await updateDoc(docRef, { status });
+      const itemsCollectionRef = collection(db, 'Betodespachantetransferencia');
+      const q = query(itemsCollectionRef, where("id", "==", idInterno));
+      const querySnapshot = await getDocs(q);
+
+      if (querySnapshot.empty) {
+        console.warn("Documento com id interno não encontrado:", idInterno);
+        return;
+      }
+
+      const docRef = doc(db, 'Betodespachantetransferencia', querySnapshot.docs[0].id);
+      await updateDoc(docRef, { status: novoStatus });
     } catch (error) {
-      console.error('Erro ao atualizar o status:', error);
+      console.error("Erro ao atualizar o status:", error);
     }
   };
 
@@ -1139,13 +1147,14 @@ const Dashboard = () => {
                         <span>•</span>
                         <DateRange fontSize="small" />
                         <span>{formatDate(doc.dataCriacao)}</span>
-                        <span>{doc.produtosSelecionados}</span>
 
                           <Thumbnails urls={doc.imagemUrls} />
 
                       </div>
                       <Box mt={1}>
-                      
+                        <Typography variant="body2" color="textSecondary">
+                          <strong>Valor:</strong> R$ {doc.valordevenda}
+                        </Typography>
                       </Box>
                     </Grid>
                     <Grid item xs={12} sm={4}>
@@ -1179,7 +1188,16 @@ const Dashboard = () => {
                   </Grid>
                 </CardContent>
 
-               
+                <CardActions>
+                  <Button
+                    onClick={() => setExpanded(expanded === doc.id ? null : doc.id)}
+                    className={classes.expandButton}
+                    startIcon={expanded === doc.id ? <ExpandLess /> : <ExpandMore />}
+                    size="small"
+                  >
+                    {expanded === doc.id ? 'Fechar Documento' : 'Ver Documento'}
+                  </Button>
+                </CardActions>
 
                 <Collapse in={expanded === doc.id} timeout="auto" unmountOnExit>
                   <div className={classes.expandedContent}>
@@ -1283,14 +1301,9 @@ const Dashboard = () => {
             message={newDocumentMessage}
             anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
           />
-          
         </Container>
       </div>
-     
     </ThemeProvider>
-    
-   
-    
   );
 };
 
