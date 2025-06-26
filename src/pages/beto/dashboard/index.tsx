@@ -878,22 +878,33 @@ const Dashboard = () => {
     return () => unsubscribe();
   }, []);
 
-  const handleStatusUpdate = async (id: string, status: string) => {
+  const handleStatusUpdate = async (idInterno: string, novoStatus: string) => {
     try {
-      const docRef = doc(db, 'Betodespachanteintrncaodevendaoficial', id);
-      await updateDoc(docRef, { status });
+      const itemsCollectionRef = collection(db, 'Betodespachanteintrncaodevendaoficial');
+      const q = query(itemsCollectionRef, where("id", "==", idInterno));
+      const querySnapshot = await getDocs(q);
+
+      if (querySnapshot.empty) {
+        console.warn("Documento com id interno não encontrado:", idInterno);
+        return;
+      }
+
+      const docRef = doc(db, 'Betodespachanteintrncaodevendaoficial', querySnapshot.docs[0].id);
+      await updateDoc(docRef, { status: novoStatus });
     } catch (error) {
-      console.error('Erro ao atualizar o status:', error);
+      console.error("Erro ao atualizar o status:", error);
     }
   };
 
   const applyFilters = () => {
     let filtered = documents;
 
+    // Filtro por status
     if (activeFilter !== 'todos') {
       filtered = filtered.filter(doc => doc.status === activeFilter);
     }
 
+    // Filtro por texto de busca
     if (searchText) {
       filtered = filtered.filter(doc =>
         (doc.nomeempresa ?? '').toLowerCase().includes(searchText.toLowerCase()) ||
@@ -910,21 +921,25 @@ const Dashboard = () => {
     setActiveFilter(filter);
   };
 
+  // Aplicar filtros sempre que documents, activeFilter ou searchText mudarem
   useEffect(() => {
     applyFilters();
-    setCurrentPage(1);
+    setCurrentPage(1); // Reset para primeira página quando filtros mudarem
   }, [documents, activeFilter, searchText]);
 
+  // Calcular documentos da página atual
   const indexOfLastDocument = currentPage * itemsPerPage;
   const indexOfFirstDocument = indexOfLastDocument - itemsPerPage;
   const currentDocuments = filteredDocuments.slice(indexOfFirstDocument, indexOfLastDocument);
   const totalPages = Math.ceil(filteredDocuments.length / itemsPerPage);
 
+  // Função para mudar página
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
-    setExpanded(null);
+    setExpanded(null); // Fechar documentos expandidos ao mudar página
   };
 
+  // Gerar números das páginas para navegação
   const getPageNumbers = () => {
     const pages = [];
     const maxVisiblePages = 5;
@@ -940,6 +955,7 @@ const Dashboard = () => {
     }
     return pages;
   };
+
 
   return (
     <ThemeProvider theme={theme}>
