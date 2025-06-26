@@ -71,28 +71,9 @@ interface Item {
   produtosSelecionados?: string[];
 }
 
-const theme = createTheme({
-  palette: {
-    type: 'light',
-    primary: {
-      main: '#1a4d3a',
-    },
-    secondary: {
-      main: '#2d5a3d',
-    },
-  },
-  breakpoints: {
-    values: {
-      xs: 0,
-      sm: 600,
-      md: 960,
-      lg: 1280,
-      xl: 1920,
-    },
-  },
-});
 
-const useStyles = makeStyles((theme) => ({
+
+const useStyles = makeStyles(() => ({
   root: {
     minHeight: '100vh',
     background: 'linear-gradient(120deg, #f4f6f9 60%, #e9ecef 100%)',
