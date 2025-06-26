@@ -3,16 +3,16 @@ import dynamic from 'next/dynamic';
 import { ThemeProvider, createGlobalStyle, DefaultTheme } from 'styled-components';
 import { AutenticacaoProvider } from '@/data/contexts/AutenticacaoContext';
 import { MantineProvider } from '@mantine/core';
-import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
+import { ThemeProvider as MuiThemeProvider, makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import muiTheme from '@/theme';
-import { FaSun, FaMoon } from 'react-icons/fa';
 import type { AppProps } from 'next/app';
 
 import MenuTopBeto from '@/components/home/home';
+import Rodape from '@/components/landing/rodape';
 import '@/styles/globals.css';
 
-// Dynamic imports para reduzir bundle inicial
+// Dynamic imports
 const ChatBot = dynamic(() => import('../components/chat/ChatBot'), {
   ssr: false,
   loading: () => null
@@ -23,7 +23,7 @@ const Particles = dynamic(() => import('@/components/landing/particles'), {
   loading: () => null
 });
 
-// Temas customizáveis
+// Temas
 const lightTheme: DefaultTheme = {
   backgroundColor: '#f4f6fa',
   textColor: '#222',
@@ -34,6 +34,7 @@ const darkTheme: DefaultTheme = {
   textColor: '#fafafa',
 };
 
+// Estilo global corrigido
 const GlobalStyles = createGlobalStyle`
   * {
     box-sizing: border-box;
@@ -46,91 +47,35 @@ const GlobalStyles = createGlobalStyle`
     color: ${(props: any) => props.theme.textColor};
     font-family: 'Montserrat', 'Poppins', 'Segoe UI', 'Roboto', Arial, sans-serif;
     transition: background-color 0.3s, color 0.3s;
-    height: 100vh;
-    overflow: hidden;
-    overscroll-behavior: none;
-    overflow-x: hidden !important;
-    max-width: 100vw;
+    min-height: 100vh;
     width: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-  }
-
-  body {
-    position: fixed;
-    width: 100%;
-    height: 100%;
+    overflow-x: hidden;
   }
 
   #__next {
+    min-height: 100vh;
     width: 100%;
-    height: 100vh;
-    max-width: 100vw;
-    overflow: hidden;
-    position: relative;
-  }
-
-  .main-content-wrapper {
-    height: calc(100vh - 72px);
-    overflow-y: auto;
-    overflow-x: hidden;
-    width: 100%;
-    position: relative;
   }
 
   img, video, iframe, embed, object {
     max-width: 100% !important;
     height: auto !important;
   }
-
-  /* Scrollbar customizada apenas para o conteúdo principal */
-  .main-content-wrapper::-webkit-scrollbar {
-    width: 6px;
-  }
-
-  .main-content-wrapper::-webkit-scrollbar-track {
-    background: #f1f1f1;
-  }
-
-  .main-content-wrapper::-webkit-scrollbar-thumb {
-    background: #888;
-    border-radius: 3px;
-  }
-
-  .main-content-wrapper::-webkit-scrollbar-thumb:hover {
-    background: #555;
-  }
-
-  /* Para telas menores, permitir rolagem quando necessário */
-  @media (max-height: 600px) {
-    html, body {
-      height: auto;
-      min-height: 100vh;
-      overflow: visible;
-      position: relative;
-    }
-
-    #__next {
-      height: auto;
-      min-height: 100vh;
-      overflow: visible;
-    }
-
-    .main-content-wrapper {
-      height: auto;
-      overflow: visible;
-    }
-  }
 `;
 
-/**
- * App principal - gerencia provedores globais, temas, partículas, menu fixo e alternância de tema.
- */
+// Estilos com makeStyles
+const useStyles = makeStyles(() => ({
+  mainWrapper: {
+    minHeight: '100vh',
+    paddingBottom: '30px', // espaço para rodapé se necessário
+    overflowX: 'hidden',
+    backgroundColor: 'inherit',
+  },
+}));
+
 function App({ Component, pageProps }: AppProps) {
   const [theme, setTheme] = useState<'light' | 'dark'>('dark');
+  const classes = useStyles();
 
   const toggleTheme = () => {
     setTheme(prev => (prev === 'light' ? 'dark' : 'light'));
@@ -143,14 +88,16 @@ function App({ Component, pageProps }: AppProps) {
         <GlobalStyles />
         <MantineProvider withGlobalStyles withNormalizeCSS>
           <AutenticacaoProvider>
+
             <MenuTopBeto />
-            {/* Conteúdo principal da página */}
-            <div className="main-content-wrapper">
+
+            <div className={classes.mainWrapper}>
               <Component {...pageProps} />
+             
             </div>
 
-            {/* Chat Bot da Lívia */}
             <ChatBot />
+
           </AutenticacaoProvider>
         </MantineProvider>
       </ThemeProvider>
