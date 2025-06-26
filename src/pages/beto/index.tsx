@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { FaShoppingCart, FaStore, FaPhone, FaTachometerAlt, FaChartPie, FaBars, FaChevronDown, FaUserTie, FaCog, FaUsers, FaFileAlt, FaCrown, FaGem, FaStar, FaTrophy, FaRocket, FaMagic, FaCopy } from 'react-icons/fa';
 import { useState, useCallback, useEffect, useRef, memo } from 'react';
 
