@@ -14,6 +14,8 @@ import {
   Phone, Email, Person, DirectionsCar
 } from '@material-ui/icons';
 import { Timestamp } from 'firebase/firestore';
+import { query, where } from 'firebase/firestore';
+
 
 // Configuração do Firebase
 const db = getFirestore(app);
@@ -447,6 +449,7 @@ const useStyles = makeStyles((theme) => ({
       background: 'linear-gradient(45deg, #2d5a3d 30%, #4a7c59 90%)',
     },
   },
+  
 }));
 
 const formatDate = (date: string | Timestamp): string => {
@@ -591,170 +594,93 @@ const DashboardHeader: React.FC<{ stats: Stats; onFilterChange: (filter: string)
   );
 };
 
-const DocumentPreview: React.FC<{ doc: Item }> = ({ doc }) => {
-  const classes = useStyles();
+  const DocumentPreview: React.FC<{ doc: Item }> = ({ doc }) => {
+    const classes = useStyles();
 
-  const handlePrintDocument = () => {
-    const printContent = document.getElementById("printable-content");
-    if (!printContent) {
-      console.error("Elemento printable-content não encontrado!");
-      return;
-    }
+    const handlePrintDocument = () => {
+      const printContent = document.getElementById("printable-content");
+      if (!printContent) {
+        console.error("Elemento printable-content não encontrado!");
+        return;
+      }
 
-    // Criar uma nova janela para impressão
-    const printWindow = window.open('', '_blank', 'width=800,height=600');
-    if (!printWindow) {
-      console.error("Não foi possível abrir janela de impressão!");
-      return;
-    }
+      const printWindow = window.open('', '_blank'); // Removido height fixo
+      if (!printWindow) {
+        console.error("Não foi possível abrir janela de impressão!");
+        return;
+      }
 
-    // Copiar estilos atuais da página
-    const currentStyles = Array.from(document.styleSheets)
-      .map(styleSheet => {
-        try {
-          return Array.from(styleSheet.cssRules)
-            .map(rule => rule.cssText)
-            .join('\n');
-        } catch (e) {
-          return '';
-        }
-      })
-      .join('\n');
+      const currentStyles = Array.from(document.styleSheets)
+        .map(styleSheet => {
+          try {
+            return Array.from(styleSheet.cssRules)
+              .map(rule => rule.cssText)
+              .join('\n');
+          } catch (e) {
+            return '';
+          }
+        })
+        .join('\n');
 
-    // HTML completo para impressão mantendo estilos originais
     const printHTML = `
       <!DOCTYPE html>
       <html>
       <head>
         <meta charset="UTF-8">
-        <title>Requerimento de Intenção de Venda</title>
+        <title>Impressão do Documento</title>
         <style>
           ${currentStyles}
 
+          html, body {
+            margin: 0;
+            padding: 0;
+            font-size: 9pt;             /* menor fonte */
+            line-height: 1.05;          /* menos espaço vertical */
+            height: auto !important;
+            overflow: visible !important;
+          }
+
           @page {
-            size: A4;
-            margin: 15mm;
+            size: A4 portrait;
+            margin: 5mm 5mm;            /* margem segura mínima para impressoras */
           }
 
           @media print {
             body {
               -webkit-print-color-adjust: exact !important;
               color-adjust: exact !important;
-              margin: 0 !important;
-              padding: 0 !important;
               background: white !important;
-            }
-
-            body * {
-              visibility: hidden !important;
-            }
-
-            .print-container, .print-container * {
-              visibility: visible !important;
             }
 
             .print-container {
-              position: absolute !important;
-              left: 0 !important;
-              top: 0 !important;
+              display: block !important;
+              visibility: visible !important;
               width: 100% !important;
-              background: white !important;
-              padding: 20px !important;
               margin: 0 !important;
-              box-sizing: border-box !important;
+              padding: 0 !important;
+              box-shadow: none !important;
+              page-break-inside: avoid !important;
             }
 
             .noPrint {
               display: none !important;
             }
+
+            /* Reduz espaço vertical entre elementos */
+            .print-container * {
+              margin-top: 2px !important;
+              margin-bottom: 2px !important;
+            }
           }
 
-          /* Estilos específicos para impressão */
           .print-container {
             font-family: Arial, sans-serif;
-            line-height: 1.4;
+            font-size: 9pt;
+            line-height: 1.05;
             color: #000;
             background: white;
-            padding: 20px;
             margin: 0;
-          }
-
-          .print-container .header {
-            text-align: center;
-            margin-bottom: 20px;
-            font-size: 10pt;
-            font-weight: bold;
-          }
-
-          .print-container .title {
-            font-size: 16pt;
-            font-weight: bold;
-            text-transform: uppercase;
-            text-align: center;
-            margin: 20px 0;
-          }
-
-          .print-container .sectionTitle {
-            font-size: 12pt;
-            font-weight: bold;
-            color: #1a4d3a;
-            margin: 15px 0 8px 0;
-            border-bottom: 2px solid #1a4d3a;
-            padding-bottom: 2px;
-          }
-
-          .print-container .field {
-            font-size: 10pt;
-            padding: 3px 5px;
-            background: rgba(26, 77, 58, 0.05);
-            border-radius: 3px;
-            border: 1px solid rgba(26, 77, 58, 0.1);
-            margin-bottom: 4px;
-          }
-
-          .print-container .field2 {
-            font-size: 11pt;
-            margin: 15px 0;
-            line-height: 1.5;
-          }
-
-          .print-container .signatureSection {
-            margin-top: 30px;
-            display: flex;
-            justify-content: center;
-            text-align: center;
-            width: 100%;
-          }
-
-          .print-container .signatureBlock {
-            text-align: center;
-            width: auto;
-            border-top: 2px solid #000;
-            padding-top: 5px;
-            margin: 0 auto;
-            min-width: 300px;
-          }
-
-          .print-container .sectionTitle4 {
-            font-size: 10pt;
-            font-weight: bold;
-            margin: 30px 0 15px 0;
-            border-bottom: 1px solid #ccc;
-            padding-bottom: 2px;
-          }
-
-          .print-container .sectionTitle3 {
-            font-size: 10pt;
-            font-weight: bold;
-            margin: 0 0 10px 0;
-            border-bottom: 1px solid #ccc;
-            padding-bottom: 2px;
-          }
-
-          .print-container .field3 {
-            font-size: 9pt;
-            margin-bottom: 5px;
-            line-height: 1.3;
+            padding: 0;
           }
         </style>
       </head>
@@ -763,20 +689,20 @@ const DocumentPreview: React.FC<{ doc: Item }> = ({ doc }) => {
           ${printContent.innerHTML}
         </div>
         <script>
-          window.onload = function() {
-            setTimeout(function() {
+          window.onload = function () {
+            setTimeout(() => {
               window.print();
-            }, 500);
+              window.close();
+            }, 300);
           };
         </script>
       </body>
       </html>
     `;
 
-    // Escrever o HTML na nova janela
     printWindow.document.write(printHTML);
     printWindow.document.close();
-  };
+    };
 
 
 
@@ -971,12 +897,21 @@ const Dashboard = () => {
     return () => unsubscribe();
   }, []);
 
-  const handleStatusUpdate = async (id: string, status: string) => {
+  const handleStatusUpdate = async (idInterno: string, novoStatus: string) => {
     try {
-      const docRef = doc(db, 'Betodespachanteintrncaodevendaoficialdigital', id);
-      await updateDoc(docRef, { status });
+      const itemsCollectionRef = collection(db, 'Betodespachanteintrncaodevendaoficialdigital');
+      const q = query(itemsCollectionRef, where("id", "==", idInterno));
+      const querySnapshot = await getDocs(q);
+
+      if (querySnapshot.empty) {
+        console.warn("Documento com id interno não encontrado:", idInterno);
+        return;
+      }
+
+      const docRef = doc(db, 'Betodespachanteintrncaodevendaoficialdigital', querySnapshot.docs[0].id);
+      await updateDoc(docRef, { status: novoStatus });
     } catch (error) {
-      console.error('Erro ao atualizar o status:', error);
+      console.error("Erro ao atualizar o status:", error);
     }
   };
 
