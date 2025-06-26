@@ -92,7 +92,7 @@ const customTheme = createTheme({
 });
 
 
-const useStyles = makeStyles((customTheme) => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     minHeight: '100vh',
     background: 'linear-gradient(120deg, #f4f6f9 60%, #e9ecef 100%)',
