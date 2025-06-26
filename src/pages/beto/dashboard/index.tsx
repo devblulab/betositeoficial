@@ -1,34 +1,4 @@
 
-import { useState, useEffect } from 'react';
-
-import {
-  Typography, Paper, Card, TextField, Button, CircularProgress, IconButton,
-  List, ListItem, ListItemText, Divider, Grid, Avatar, Snackbar, Box, Container,
-  Chip, Collapse, CardContent, CardActions, Select, MenuItem, FormControl
-} from '@material-ui/core';
-import { makeStyles, createTheme, ThemeProvider } from '@material-ui/core/styles';
-import { collection, getFirestore, getDocs, updateDoc, doc, onSnapshot, deleteDoc } from 'firebase/firestore';
-import { app } from '@/logic/firebase/config/app';
-import {
-  Refresh, ExpandMore, ExpandLess, Assignment, CheckCircle, 
-  DateRange, Business, Search, Schedule, Warning, PictureAsPdf,
-  Phone, Email, Person, DirectionsCar
-} from '@material-ui/icons';
-import { Timestamp } from 'firebase/firestore';
-
-// Configuração do Firebase
-const db = getFirestore(app);
-
-interface Stats {
-  total: number;
-  pendentes: number;
-  analisando: number;
-  faltandoDoc: number;
-  aguardandoDetran: number;
-  prontos: number;
-  concluidos: number;
-  valorTotal: number;
-}
 
 import React, { useState, useEffect } from 'react';
 import {
