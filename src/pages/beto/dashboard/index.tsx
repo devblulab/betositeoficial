@@ -980,7 +980,7 @@ const Dashboard = () => {
   };
 
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={customTheme}>
       <div className={classes.root}>
         <Container maxWidth="xl">
           <DashboardHeader 
