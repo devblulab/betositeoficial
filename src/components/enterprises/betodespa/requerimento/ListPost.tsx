@@ -166,33 +166,25 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   button: {
-    fontFamily: '"Playfair Display", serif',
-    borderRadius: '8px',
-    padding: theme.spacing(1.5, 3),
-    fontWeight: 600,
-    textTransform: 'none',
-    letterSpacing: '0.05em',
-    boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
-    background: 'linear-gradient(135deg, #2d5a3d 0%, #4a7c59 100%)',
-    color: '#ffffff',
-    border: 'none',
-    transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
-    '@media print': {
-      display: 'none',
-    },
+    borderRadius: '12px',
+    padding: theme.spacing(1.75),
+    fontWeight: 700,
+    textTransform: 'uppercase',
+    letterSpacing: '1px',
+    boxShadow: '0 5px 15px rgba(0, 0, 0, 0.2)',
+    transition: 'all 0.3s ease',
     '&:hover': {
-      background: 'linear-gradient(135deg, #1a4d3a 0%, #2d5a3d 100%)',
-      boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-      transform: 'translateY(-1px)',
+      boxShadow: '0 8px 25px rgba(0, 0, 0, 0.3)',
+      transform: 'translateY(-2px)',
     },
   },
   primaryButton: {
-    background: 'linear-gradient(90deg, #5C7AEA 0%, #A3BFFA 100%)',
+    background: 'linear-gradient(135deg, #2d5a3d 0%, #4a7c59 100%)',
     color: '#fff',
   },
   secondaryButton: {
-    border: '1px solid #A3BFFA',
-    color: '#A3BFFA',
+    border: '1px solid #6B8E23',
+    color: '#556B2F',
     backgroundColor: 'rgba(255, 255, 255, 0.05)',
   },
   cameraButton: {
@@ -1181,12 +1173,16 @@ await addDoc(collection(db, 'OrdensDeServicoBludata'), jsonSGDW);
       <Button
         key={produto}
         variant={produtosSelecionados.includes(produto) ? 'contained' : 'outlined'}
-        color="primary"
         onClick={() => toggleProduto(produto)}
-        className={classes.button}
+        className={`${classes.button} ${
+          produtosSelecionados.includes(produto)
+            ? classes.primaryButton
+            : classes.secondaryButton
+        }`}
       >
         {produto}
       </Button>
+
     ))}
   </div>
 </Grid>
