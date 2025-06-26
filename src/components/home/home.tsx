@@ -50,7 +50,8 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   appBar: {
-    background: 'linear-gradient(135deg, #1a4d3a 0%, #2d5a3d 100%)',
+    background: 'linear-gradient(135deg, #1a4d3a 10%, #2d5a3d 100%)',
+    color: '#000',
     boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
   },
   menuButton: {
@@ -341,7 +342,7 @@ export default function ResponsiveAppBar() {
         {
           icon: <People />,
           text: "Acompanhar Serviços",
-          path: "/acompanhamento",
+          path: "/acompanhar",
         }
       ]
     },
@@ -687,7 +688,7 @@ export default function ResponsiveAppBar() {
           <Box className={classes.logoContainer}>
             <Avatar className={classes.logoAvatar}>DB</Avatar>
             <Typography variant="h6" className={classes.logoText}>
-              Despachante Beto Dheon
+              Despachante Beto Dehon
             </Typography>
           </Box>
         </Toolbar>
@@ -720,7 +721,7 @@ export default function ResponsiveAppBar() {
             border: '1px solid #4a7c59'
           }}>
             <Typography variant="subtitle2" style={{ color: '#2d5a3d', fontWeight: 'bold' }} gutterBottom>
-              📱 Despachante Beto Dheon
+              📱 Despachante Beto Dehon
             </Typography>
             <Typography variant="body2" style={{ marginBottom: 8 }}>
               🕒 Horário de Atendimento: Segunda a Sexta, 8h às 18h
