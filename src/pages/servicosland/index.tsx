@@ -35,7 +35,14 @@ borderRadius: theme.spacing(1), transition: 'all 0.3s', cursor: 'pointer', borde
     display: 'flex', flexDirection: 'column', height: '100%',
     '&:hover': { transform: 'translateY(-8px) scale(1.02)', boxShadow: '0 20px 40px rgba(37, 99, 235, 0.15)', borderColor: '#2563eb' },
   },
-  serviceIcon: { fontSize: 48, color: '#2563eb', marginBottom: theme.spacing(2) },
+  serviceIcon: {
+    fontSize: 48,
+    color: '#2563eb',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
   serviceName: { fontWeight: 'bold', fontSize: '1.1rem', color: '#111827', marginBottom: theme.spacing(1) },
   servicePrice: { fontSize: '1.2rem', fontWeight: 'bold', color: '#059669', marginTop: 'auto' },
   categoryChip: { fontSize: '0.75rem', height: 24, fontWeight: 'bold', backgroundColor: '#dbeafe', color: '#1e40af', marginBottom: theme.spacing(1) },
@@ -128,11 +135,13 @@ const Servicos: React.FC = () => {
                     >
                         <CardContent style={{ padding: '-22px' }}>
 
-                        <Box display="flex" justifyContent="center" mb={2}>
-                          <Box className={classes.serviceIcon}>
-                            {getIcon(servico.icone)}
+                          <Box display="flex" justifyContent="center" alignItems="center" mb={2}>
+                            <Box>
+                              {React.cloneElement(getIcon(servico.icone) as React.ReactElement, {
+                                className: classes.serviceIcon,
+                              })}
+                            </Box>
                           </Box>
-                        </Box>
                         <Chip
                           label={servico.categoria}
                           size="small"
@@ -141,17 +150,9 @@ const Servicos: React.FC = () => {
                         <Typography className={classes.serviceName}>
                           {servico.nome}
                         </Typography>
-                        <Typography
-                          variant="body2"
-                          color="textSecondary"
-                          style={{ marginBottom: 16, overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}
-                        >
-                          {servico.descricao}
-                        </Typography>
+                       
                         <Box display="flex" justifyContent="space-between" alignItems="center">
-                          <Typography className={classes.servicePrice}>
-                            R$ {servico.valor}
-                          </Typography>
+                         
                           <Chip
                             label={servico.tipo}
                             size="small"
