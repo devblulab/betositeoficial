@@ -85,23 +85,7 @@ const Servicos: React.FC = () => {
       <Container maxWidth="xl" style={{ padding: '14px', backgroundColor: 'rgba(0, 0, 0, 0)' }}>
 
 
-        <Paper className={classes.searchContainer}>
-          <TextField
-            fullWidth
-            placeholder="Digite o nome do serviço..."
-            value={termoBusca}
-            onChange={(e) => setTermoBusca(e.target.value)}
-            className={classes.searchInput}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <Search style={{ color: '#6b7280' }} />
-                </InputAdornment>
-              ),
-            }}
-            variant="outlined"
-          />
-        </Paper>
+        
 
         <Paper style={{ marginBottom: 24 }}>
           <Tabs
