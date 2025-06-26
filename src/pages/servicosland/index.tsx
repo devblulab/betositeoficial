@@ -16,7 +16,7 @@ import { servicos, categorias } from '../../data/servicos';
 
 const useStyles = makeStyles((theme) => ({
   root: { minHeight: '100vh', backgroundColor: 'rgba(0, 0, 0, 0)' },
-  searchContainer: { background: '#fff', borderRadius: theme.spacing(2), padding: theme.spacing(1), marginBottom: theme.spacing(1), boxShadow: '0 4px 20px rgba(0,0,0,0.1)' },
+  searchContainer: { background: '#fff', borderRadius: theme.spacing(2), padding: theme.spacing(-8), marginBottom: theme.spacing(1), boxShadow: '0 4px 20px rgba(0,0,0,0.1)' },
   searchInput: {
     '& .MuiOutlinedInput-root': {
       borderRadius: theme.spacing(2), backgroundColor: '#f9fafb',
@@ -30,7 +30,8 @@ const useStyles = makeStyles((theme) => ({
     '& .MuiTabs-indicator': { backgroundColor: '#2563eb', height: 3, borderRadius: '3px 3px 0 0' },
   },
   serviceCard: {
-    borderRadius: theme.spacing(1.5), transition: 'all 0.3s', cursor: 'pointer', border: '1px solid #e5e7eb',
+    padding: theme.spacing(1),
+borderRadius: theme.spacing(1), transition: 'all 0.3s', cursor: 'pointer', border: '1px solid #e5e7eb',
     display: 'flex', flexDirection: 'column', height: '100%',
     '&:hover': { transform: 'translateY(-8px) scale(1.02)', boxShadow: '0 20px 40px rgba(37, 99, 235, 0.15)', borderColor: '#2563eb' },
   },
@@ -85,7 +86,6 @@ const Servicos: React.FC = () => {
       <Container maxWidth="xl" style={{ padding: '14px', backgroundColor: 'rgba(0, 0, 0, 0)' }}>
 
 
-        
 
         <Paper style={{ marginBottom: 24 }}>
           <Tabs
@@ -112,7 +112,7 @@ const Servicos: React.FC = () => {
             </Typography>
           </Box>
         ) : servicosFiltrados.length > 0 ? (
-          <Grid container spacing={3}>
+          <Grid container spacing={1}>
             <AnimatePresence>
               {servicosFiltrados.map((servico, index) => (
                 <Grid item xs={12} sm={6} md={4} lg={3} key={servico.id}>
@@ -126,7 +126,8 @@ const Servicos: React.FC = () => {
                       className={classes.serviceCard}
                       onClick={() => handleServiceClick(servico.id)}
                     >
-                      <CardContent>
+                        <CardContent style={{ padding: '-22px' }}>
+
                         <Box display="flex" justifyContent="center" mb={2}>
                           <Box className={classes.serviceIcon}>
                             {getIcon(servico.icone)}
