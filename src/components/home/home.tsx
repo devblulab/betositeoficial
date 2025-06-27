@@ -276,6 +276,12 @@ const useStyles = makeStyles((theme) => ({
     gap: theme.spacing(0.5),
     marginTop: theme.spacing(1),
   },
+  linkItem: {
+    textDecoration: 'none',
+    color: 'inherit',
+    display: 'block',
+    width: '100%',
+  },
 }));
 
 interface MenuSection {
@@ -460,14 +466,16 @@ export default function ResponsiveAppBar() {
             ── ou ──
           </Typography>
 
-          <Button
-            startIcon={<ViewModule />}
-            className={classes.loginButton}
-            onClick={() => handleNavigation('/servicos')}
-            fullWidth
-          >
-            Ver Todos Serviços
-          </Button>
+          <Link href="/servicos" passHref>
+            <Button
+              component="a"
+              startIcon={<ViewModule />}
+              className={classes.loginButton}
+              fullWidth
+            >
+              Ver Todos Serviços
+            </Button>
+          </Link>
 
           <Button
             startIcon={<FaWhatsapp />}
@@ -498,26 +506,29 @@ export default function ResponsiveAppBar() {
                 {item.subItems ? (
                   <>
                     {isAuthenticated ? (
-                      <ListItem 
-                        button 
-                        onClick={item.onClick}
-                        className={`${classes.menuItem} ${classes.menuItemAuthenticated}`}
-                      >
-                        <ListItemIcon className={classes.menuItemIcon}>
-                          {item.icon}
-                        </ListItemIcon>
-                        <ListItemText 
-                          primary={item.text} 
-                          className={classes.menuItemText}
-                        />
-                        {item.status && (
-                          <Box className={classes.statusBadge}>
-                            <Typography variant="caption" className={classes.statusText}>
-                              {item.status}
-                            </Typography>
-                          </Box>
-                        )}
-                      </ListItem>
+                      <Link href={item.path || '#'} passHref>
+                        <ListItem 
+                          button 
+                          onClick={item.onClick}
+                          className={`${classes.menuItem} ${classes.menuItemAuthenticated}`}
+                          component="a"
+                        >
+                          <ListItemIcon className={classes.menuItemIcon}>
+                            {item.icon}
+                          </ListItemIcon>
+                          <ListItemText 
+                            primary={item.text} 
+                            className={classes.menuItemText}
+                          />
+                          {item.status && (
+                            <Box className={classes.statusBadge}>
+                              <Typography variant="caption" className={classes.statusText}>
+                                {item.status}
+                              </Typography>
+                            </Box>
+                          )}
+                        </ListItem>
+                      </Link>
                     ) : (
                       <ListItem
                         className={`${classes.menuItem} ${classes.lockedItem}`}
@@ -535,20 +546,21 @@ export default function ResponsiveAppBar() {
                     <Collapse in={isAuthenticated && !!expandedSections[`${sectionIndex}-${itemIndex}`]} timeout="auto" unmountOnExit>
                       <List component="div" disablePadding>
                         {item.subItems.map((subItem, subIndex) => (
-                          <ListItem 
-                            button 
-                            key={subIndex}
-                            className={classes.subMenuItem}
-                            onClick={() => handleNavigation(subItem.path)}
-                          >
-                            <ListItemIcon className={classes.subMenuItemIcon}>
-                              <Assignment />
-                            </ListItemIcon>
-                            <ListItemText 
-                              primary={subItem.text} 
-                              className={classes.subMenuItemText}
-                            />
-                          </ListItem>
+                          <Link href={subItem.path} passHref key={subIndex}>
+                            <ListItem 
+                              button 
+                              className={classes.subMenuItem}
+                              component="a"
+                            >
+                              <ListItemIcon className={classes.subMenuItemIcon}>
+                                <Assignment />
+                              </ListItemIcon>
+                              <ListItemText 
+                                primary={subItem.text} 
+                                className={classes.subMenuItemText}
+                              />
+                            </ListItem>
+                          </Link>
                         ))}
                       </List>
                     </Collapse>
@@ -567,26 +579,29 @@ export default function ResponsiveAppBar() {
                     );
 
                     return hasAccess ? (
-                      <ListItem 
-                        button 
-                        onClick={item.onClick}
-                        className={`${classes.menuItem} ${classes.menuItemAuthenticated}`}
-                      >
-                        <ListItemIcon className={classes.menuItemIcon}>
-                          {item.icon}
-                        </ListItemIcon>
-                        <ListItemText 
-                          primary={item.text} 
-                          className={classes.menuItemText}
-                        />
-                        {item.status && (
-                          <Box className={classes.statusBadge}>
-                            <Typography variant="caption" className={classes.statusText}>
-                              {item.status}
-                            </Typography>
-                          </Box>
-                        )}
-                      </ListItem>
+                      <Link href={item.path || '#'} passHref>
+                        <ListItem 
+                          button 
+                          onClick={item.onClick}
+                          className={`${classes.menuItem} ${classes.menuItemAuthenticated}`}
+                          component="a"
+                        >
+                          <ListItemIcon className={classes.menuItemIcon}>
+                            {item.icon}
+                          </ListItemIcon>
+                          <ListItemText 
+                            primary={item.text} 
+                            className={classes.menuItemText}
+                          />
+                          {item.status && (
+                            <Box className={classes.statusBadge}>
+                              <Typography variant="caption" className={classes.statusText}>
+                                {item.status}
+                              </Typography>
+                            </Box>
+                          )}
+                        </ListItem>
+                      </Link>
                     ) : (
                       <ListItem className={`${classes.menuItem} ${classes.lockedItem}`}>
                         <ListItemIcon className={classes.menuItemIcon}>
@@ -618,20 +633,21 @@ export default function ResponsiveAppBar() {
               ...(hasColaboradorAccess ? [{ icon: <Dashboard />, label: "Colaboradores", path: "/colaboradores" }] : [])
             ].map((btn: ActionButton, index) => (
               btn.path ? (
-                <Button
-                  key={index}
-                  startIcon={btn.icon}
-                  className={classes.actionButton}
-                  style={btn.color ? { 
-                    background: `linear-gradient(45deg, ${btn.color} 30%, ${btn.color}dd 90%)`,
-                    color: '#fff'
-                  } : {}}
-                  onClick={() => btn.path && handleNavigation(btn.path)}
-                  aria-label={btn.label}
-                  fullWidth
-                >
-                  {btn.label}
-                </Button>
+                <Link href={btn.path} passHref key={index}>
+                  <Button
+                    component="a"
+                    startIcon={btn.icon}
+                    className={classes.actionButton}
+                    style={btn.color ? { 
+                      background: `linear-gradient(45deg, ${btn.color} 30%, ${btn.color}dd 90%)`,
+                      color: '#fff'
+                    } : {}}
+                    aria-label={btn.label}
+                    fullWidth
+                  >
+                    {btn.label}
+                  </Button>
+                </Link>
               ) : (
                 <Button
                   key={index}
