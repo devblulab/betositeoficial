@@ -9,7 +9,7 @@ import muiTheme from '@/theme';
 import type { AppProps } from 'next/app';
 
 import MenuTopBeto from '@/components/home/home';
-import Rodape from '@/components/landing/rodape';
+
 import '@/styles/globals.css';
 
 // Dynamic imports
