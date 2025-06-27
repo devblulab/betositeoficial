@@ -45,7 +45,7 @@ import Servicos from '@/pages/servicosland/index';
 const useStyles = makeStyles((theme) => ({
   root: {
     minHeight: '100vh',
-    background: 'linear-gradient(145deg, #dce3f4 -10%, #c6e5d9 25%, #b3f0d0 75%, #b3f0d0 100%)',
+    background: 'linear-gradient(0deg, #dce3f4 -10%, #c6e5d9 90%, #497f66 65%, #b6f0d0 110%) ',
     padding: theme.spacing(-9),
     position: 'relative',
     overflow: 'hidden',
@@ -56,6 +56,7 @@ const useStyles = makeStyles((theme) => ({
     minHeight: '100vh',
     display: 'flex',
     alignItems: 'center',
+    
     justifyContent: 'center',
     position: 'relative',
     padding: theme.spacing(2, 1),
@@ -72,6 +73,7 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center',
     color: '#fff',
     zIndex: 2,
+    
     maxWidth: '100%',
     width: '100%',
   },
@@ -79,6 +81,10 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    
+      backgroundSize: '900px',
+      backgroundRepeat: 'no-repeat',
+      backgroundPosition: 'center',
     marginBottom: theme.spacing(0.5),
     [theme.breakpoints.down('sm')]: {
       marginBottom: theme.spacing(1),
@@ -90,6 +96,7 @@ const useStyles = makeStyles((theme) => ({
   logoContainer: {
     position: 'relative',
     marginBottom: theme.spacing(1),
+    
     [theme.breakpoints.down('sm')]: {
       marginBottom: theme.spacing(1),
     },
@@ -143,6 +150,7 @@ const useStyles = makeStyles((theme) => ({
     fontFamily: '"Playfair Display", "Georgia", serif',
     fontWeight: 800,
     fontSize: 'clamp(1.2rem, 3.5vw, 1.8rem)',
+    
     color: '#f1f5f9',
     textShadow: '1px 1px 3px rgba(0,0,0,0.5)',
     lineHeight: 1.2,
