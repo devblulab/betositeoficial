@@ -269,6 +269,21 @@ export const servicos: Servico[] = [
     ],
     valor: "553,00",
     tipo: "TAXAS"
+  },
+  {
+    id: 2018,
+    nome: "Parcelamento Até 18x no cartão",
+    categoria: "Parcelamento",
+    icone: "CompareArrows",
+    descricao: "Taxas",
+    documentos: [
+     
+      "Documento de identificação",
+      "Comprovante de endereço"
+     
+    ],
+    valor: "Negociar",
+    tipo: "TAXAS"
   }
 ];
 
