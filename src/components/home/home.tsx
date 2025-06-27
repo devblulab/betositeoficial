@@ -282,6 +282,12 @@ const useStyles = makeStyles((theme) => ({
     display: 'block',
     width: '100%',
   },
+  linkButton: {
+    textDecoration: 'none',
+    '&:hover': {
+      textDecoration: 'none',
+    },
+  },
 }));
 
 interface MenuSection {
@@ -293,7 +299,6 @@ interface MenuItem {
   icon: React.ReactElement;
   text: string;
   path?: string;
-  onClick?: () => void;
   subItems?: SubMenuItem[];
   status?: string;
 }
@@ -315,7 +320,7 @@ export default function ResponsiveAppBar() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [expandedSections, setExpandedSections] = useState<{ [key: string]: boolean }>({});
   const [contactDialog, setContactDialog] = useState(false);
-  const { usuario, loginGoogle, logout } = useContext(AutenticacaoContext);
+  const { usuario, logout } = useContext(AutenticacaoContext);
   const { hasAreaAccess } = usePermissions();
   const router = useRouter();
 
@@ -328,11 +333,6 @@ export default function ResponsiveAppBar() {
       ...prev,
       [section]: !prev[section]
     }));
-  };
-
-  const handleNavigation = (path: string) => {
-    setDrawerOpen(false);
-    router.push(path).catch(err => console.error("Navigation error:", err));
   };
 
   const isAuthenticated = !!usuario?.email;
@@ -356,14 +356,12 @@ export default function ResponsiveAppBar() {
         {
           icon: <People />,
           text: "Área Serviços",
-          path: "/servicos",
-          onClick: () => handleNavigation("/servicos")
+          path: "/servicos"
         },
         {
           icon: <People />,
           text: "Acompanhar Serviços",
-          path: "/acompanhar",
-          onClick: () => handleNavigation("/acompanhar")
+          path: "/acompanhar"
         }
       ]
     },
@@ -374,21 +372,18 @@ export default function ResponsiveAppBar() {
           icon: <Person />,
           text: "Área do Cliente",
           path: "/area-cliente",
-          onClick: () => handleNavigation("/area-cliente"),
           status: "ATIVO"
         }] : []),
         ...(hasEmpresarialAccess ? [{
           icon: <Business />,
           text: "Área Empresarial", 
           path: "/beto/empresas",
-          onClick: () => handleNavigation("/beto/empresas"),
           status: "PREMIUM"
         }] : []),
         ...(hasColaboradorAccess ? [{
           icon: <People />,
           text: "Área Colaboradores",
-          path: "/colaboradores",
-          onClick: () => handleNavigation("/colaboradores")
+          path: "/colaboradores"
         }] : [])
       ]
     },
@@ -398,8 +393,7 @@ export default function ResponsiveAppBar() {
         {
           icon: <Dashboard />,
           text: "Dashboard",
-          path: "/beto/dashboard",
-          onClick: () => handleNavigation("/beto/dashboard")
+          path: "/beto/dashboard"
         }
       ]
     }] : [])
@@ -466,7 +460,7 @@ export default function ResponsiveAppBar() {
             ── ou ──
           </Typography>
 
-          <Link href="/servicos" passHref>
+          <Link href="/servicos" passHref className={classes.linkButton}>
             <Button
               component="a"
               startIcon={<ViewModule />}
@@ -506,10 +500,10 @@ export default function ResponsiveAppBar() {
                 {item.subItems ? (
                   <>
                     {isAuthenticated ? (
-                      <Link href={item.path || '#'} passHref>
+                      <Link href={item.path || '#'} passHref className={classes.linkItem}>
                         <ListItem 
                           button 
-                          onClick={item.onClick}
+                          onClick={() => setDrawerOpen(false)}
                           className={`${classes.menuItem} ${classes.menuItemAuthenticated}`}
                           component="a"
                         >
@@ -546,11 +540,12 @@ export default function ResponsiveAppBar() {
                     <Collapse in={isAuthenticated && !!expandedSections[`${sectionIndex}-${itemIndex}`]} timeout="auto" unmountOnExit>
                       <List component="div" disablePadding>
                         {item.subItems.map((subItem, subIndex) => (
-                          <Link href={subItem.path} passHref key={subIndex}>
+                          <Link href={subItem.path} passHref key={subIndex} className={classes.linkItem}>
                             <ListItem 
                               button 
                               className={classes.subMenuItem}
                               component="a"
+                              onClick={() => setDrawerOpen(false)}
                             >
                               <ListItemIcon className={classes.subMenuItemIcon}>
                                 <Assignment />
@@ -579,12 +574,12 @@ export default function ResponsiveAppBar() {
                     );
 
                     return hasAccess ? (
-                      <Link href={item.path || '#'} passHref>
+                      <Link href={item.path || '#'} passHref className={classes.linkItem}>
                         <ListItem 
                           button 
-                          onClick={item.onClick}
                           className={`${classes.menuItem} ${classes.menuItemAuthenticated}`}
                           component="a"
+                          onClick={() => setDrawerOpen(false)}
                         >
                           <ListItemIcon className={classes.menuItemIcon}>
                             {item.icon}
@@ -633,7 +628,7 @@ export default function ResponsiveAppBar() {
               ...(hasColaboradorAccess ? [{ icon: <Dashboard />, label: "Colaboradores", path: "/colaboradores" }] : [])
             ].map((btn: ActionButton, index) => (
               btn.path ? (
-                <Link href={btn.path} passHref key={index}>
+                <Link href={btn.path} passHref key={index} className={classes.linkButton}>
                   <Button
                     component="a"
                     startIcon={btn.icon}
@@ -644,6 +639,7 @@ export default function ResponsiveAppBar() {
                     } : {}}
                     aria-label={btn.label}
                     fullWidth
+                    onClick={() => setDrawerOpen(false)}
                   >
                     {btn.label}
                   </Button>
