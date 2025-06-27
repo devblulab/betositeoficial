@@ -297,6 +297,13 @@ interface SubMenuItem {
   path: string;
 }
 
+type ActionButton = {
+  icon: React.ReactNode;
+  label: string;
+  path?: string;
+  color?: string;
+};
+
 export default function ResponsiveAppBar() {
   const classes = useStyles();
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -332,7 +339,6 @@ export default function ResponsiveAppBar() {
     }
   };
 
-  // Verificar permissões do usuário
   const hasClienteAccess = isAuthenticated && hasAreaAccess('cliente');
   const hasEmpresarialAccess = isAuthenticated && hasAreaAccess('empresarial');
   const hasColaboradorAccess = isAuthenticated && hasAreaAccess('colaborador');
@@ -407,17 +413,17 @@ export default function ResponsiveAppBar() {
       {isAuthenticated ? (
         <Box className={classes.userInfo}>
           <Avatar 
-            src={usuario?.imagemUrl || ''} 
+            src={usuario?.imagemUrl ?? ''} 
             className={classes.logoAvatar}
             style={{ width: 60, height: 60, margin: '0 auto 8px' }}
           >
-            {usuario?.nome?.charAt(0) || 'U'}
+            {usuario?.nome?.charAt(0) ?? 'U'}
           </Avatar>
           <Typography variant="h6" style={{ fontFamily: '"Playfair Display", "Georgia", serif' }}>
-            {usuario?.nome}
+            {usuario?.nome ?? 'Usuário'}
           </Typography>
           <Typography variant="caption" style={{ opacity: 0.8 }}>
-            {usuario?.email}
+            {usuario?.email ?? ''}
           </Typography>
           <Box className={classes.chipContainer}>
             <Chip 
@@ -526,7 +532,7 @@ export default function ResponsiveAppBar() {
                         <Lock style={{ fontSize: 16, opacity: 0.5 }} />
                       </ListItem>
                     )}
-                    <Collapse in={isAuthenticated && expandedSections[`${sectionIndex}-${itemIndex}`]} timeout="auto" unmountOnExit>
+                    <Collapse in={isAuthenticated && !!expandedSections[`${sectionIndex}-${itemIndex}`]} timeout="auto" unmountOnExit>
                       <List component="div" disablePadding>
                         {item.subItems.map((subItem, subIndex) => (
                           <ListItem 
@@ -610,7 +616,7 @@ export default function ResponsiveAppBar() {
               ...(hasClienteAccess ? [{ icon: <Assignment />, label: "Área Cliente", path: "/area-cliente" }] : []),
               ...(hasEmpresarialAccess ? [{ icon: <Business />, label: "Área Empresarial", path: "/beto/empresas" }] : []),
               ...(hasColaboradorAccess ? [{ icon: <Dashboard />, label: "Colaboradores", path: "/colaboradores" }] : [])
-            ].map((btn, index) => (
+            ].map((btn: ActionButton, index) => (
               btn.path ? (
                 <Button
                   key={index}
@@ -620,7 +626,7 @@ export default function ResponsiveAppBar() {
                     background: `linear-gradient(45deg, ${btn.color} 30%, ${btn.color}dd 90%)`,
                     color: '#fff'
                   } : {}}
-                  onClick={() => handleNavigation(btn.path)}
+                  onClick={() => btn.path && handleNavigation(btn.path)}
                   aria-label={btn.label}
                   fullWidth
                 >
