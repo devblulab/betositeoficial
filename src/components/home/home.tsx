@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   AppBar,
@@ -324,6 +324,18 @@ export default function ResponsiveAppBar() {
   const { hasAreaAccess } = usePermissions();
   const router = useRouter();
 
+  // Fechar o drawer quando a rota muda
+  useEffect(() => {
+    const handleRouteChange = () => {
+      setDrawerOpen(false);
+    };
+
+    router.events.on('routeChangeStart', handleRouteChange);
+    return () => {
+      router.events.off('routeChangeStart', handleRouteChange);
+    };
+  }, [router]);
+
   const toggleDrawer = () => {
     setDrawerOpen(!drawerOpen);
   };
@@ -399,6 +411,11 @@ export default function ResponsiveAppBar() {
     }] : [])
   ];
 
+  const handleNavigation = (path: string) => {
+    router.push(path);
+    setDrawerOpen(false);
+  };
+
   const renderDrawerContent = () => (
     <Box className={classes.drawerContent}>
       <Box className={classes.drawerHeader}>
@@ -460,16 +477,14 @@ export default function ResponsiveAppBar() {
             ── ou ──
           </Typography>
 
-          <Link href="/servicos" passHref className={classes.linkButton}>
-            <Button
-              component="a"
-              startIcon={<ViewModule />}
-              className={classes.loginButton}
-              fullWidth
-            >
-              Ver Todos Serviços
-            </Button>
-          </Link>
+          <Button
+            startIcon={<ViewModule />}
+            className={classes.loginButton}
+            onClick={() => handleNavigation('/servicos')}
+            fullWidth
+          >
+            Ver Todos Serviços
+          </Button>
 
           <Button
             startIcon={<FaWhatsapp />}
@@ -500,29 +515,27 @@ export default function ResponsiveAppBar() {
                 {item.subItems ? (
                   <>
                     {isAuthenticated ? (
-                      <Link href={item.path || '#'} passHref className={classes.linkItem}>
-                        <ListItem 
-                          button 
-                          onClick={() => setDrawerOpen(false)}
-                          className={`${classes.menuItem} ${classes.menuItemAuthenticated}`}
-                          component="a"
-                        >
-                          <ListItemIcon className={classes.menuItemIcon}>
-                            {item.icon}
-                          </ListItemIcon>
-                          <ListItemText 
-                            primary={item.text} 
-                            className={classes.menuItemText}
-                          />
-                          {item.status && (
-                            <Box className={classes.statusBadge}>
-                              <Typography variant="caption" className={classes.statusText}>
-                                {item.status}
-                              </Typography>
-                            </Box>
-                          )}
-                        </ListItem>
-                      </Link>
+                      <ListItem 
+                        button 
+                        onClick={() => item.path ? handleNavigation(item.path) : toggleSection(`${sectionIndex}-${itemIndex}`)}
+                        className={`${classes.menuItem} ${classes.menuItemAuthenticated}`}
+                      >
+                        <ListItemIcon className={classes.menuItemIcon}>
+                          {item.icon}
+                        </ListItemIcon>
+                        <ListItemText 
+                          primary={item.text} 
+                          className={classes.menuItemText}
+                        />
+                        {item.status && (
+                          <Box className={classes.statusBadge}>
+                            <Typography variant="caption" className={classes.statusText}>
+                              {item.status}
+                            </Typography>
+                          </Box>
+                        )}
+                        {expandedSections[`${sectionIndex}-${itemIndex}`] ? <ExpandLess /> : <ExpandMore />}
+                      </ListItem>
                     ) : (
                       <ListItem
                         className={`${classes.menuItem} ${classes.lockedItem}`}
@@ -540,22 +553,20 @@ export default function ResponsiveAppBar() {
                     <Collapse in={isAuthenticated && !!expandedSections[`${sectionIndex}-${itemIndex}`]} timeout="auto" unmountOnExit>
                       <List component="div" disablePadding>
                         {item.subItems.map((subItem, subIndex) => (
-                          <Link href={subItem.path} passHref key={subIndex} className={classes.linkItem}>
-                            <ListItem 
-                              button 
-                              className={classes.subMenuItem}
-                              component="a"
-                              onClick={() => setDrawerOpen(false)}
-                            >
-                              <ListItemIcon className={classes.subMenuItemIcon}>
-                                <Assignment />
-                              </ListItemIcon>
-                              <ListItemText 
-                                primary={subItem.text} 
-                                className={classes.subMenuItemText}
-                              />
-                            </ListItem>
-                          </Link>
+                          <ListItem 
+                            button 
+                            className={classes.subMenuItem}
+                            onClick={() => handleNavigation(subItem.path)}
+                            key={subIndex}
+                          >
+                            <ListItemIcon className={classes.subMenuItemIcon}>
+                              <Assignment />
+                            </ListItemIcon>
+                            <ListItemText 
+                              primary={subItem.text} 
+                              className={classes.subMenuItemText}
+                            />
+                          </ListItem>
                         ))}
                       </List>
                     </Collapse>
@@ -574,29 +585,26 @@ export default function ResponsiveAppBar() {
                     );
 
                     return hasAccess ? (
-                      <Link href={item.path || '#'} passHref className={classes.linkItem}>
-                        <ListItem 
-                          button 
-                          className={`${classes.menuItem} ${classes.menuItemAuthenticated}`}
-                          component="a"
-                          onClick={() => setDrawerOpen(false)}
-                        >
-                          <ListItemIcon className={classes.menuItemIcon}>
-                            {item.icon}
-                          </ListItemIcon>
-                          <ListItemText 
-                            primary={item.text} 
-                            className={classes.menuItemText}
-                          />
-                          {item.status && (
-                            <Box className={classes.statusBadge}>
-                              <Typography variant="caption" className={classes.statusText}>
-                                {item.status}
-                              </Typography>
-                            </Box>
-                          )}
-                        </ListItem>
-                      </Link>
+                      <ListItem 
+                        button 
+                        className={`${classes.menuItem} ${classes.menuItemAuthenticated}`}
+                        onClick={() => handleNavigation(item.path || '/')}
+                      >
+                        <ListItemIcon className={classes.menuItemIcon}>
+                          {item.icon}
+                        </ListItemIcon>
+                        <ListItemText 
+                          primary={item.text} 
+                          className={classes.menuItemText}
+                        />
+                        {item.status && (
+                          <Box className={classes.statusBadge}>
+                            <Typography variant="caption" className={classes.statusText}>
+                              {item.status}
+                            </Typography>
+                          </Box>
+                        )}
+                      </ListItem>
                     ) : (
                       <ListItem className={`${classes.menuItem} ${classes.lockedItem}`}>
                         <ListItemIcon className={classes.menuItemIcon}>
@@ -627,39 +635,20 @@ export default function ResponsiveAppBar() {
               ...(hasEmpresarialAccess ? [{ icon: <Business />, label: "Área Empresarial", path: "/beto/empresas" }] : []),
               ...(hasColaboradorAccess ? [{ icon: <Dashboard />, label: "Colaboradores", path: "/colaboradores" }] : [])
             ].map((btn: ActionButton, index) => (
-              btn.path ? (
-                <Link href={btn.path} passHref key={index} className={classes.linkButton}>
-                  <Button
-                    component="a"
-                    startIcon={btn.icon}
-                    className={classes.actionButton}
-                    style={btn.color ? { 
-                      background: `linear-gradient(45deg, ${btn.color} 30%, ${btn.color}dd 90%)`,
-                      color: '#fff'
-                    } : {}}
-                    aria-label={btn.label}
-                    fullWidth
-                    onClick={() => setDrawerOpen(false)}
-                  >
-                    {btn.label}
-                  </Button>
-                </Link>
-              ) : (
-                <Button
-                  key={index}
-                  startIcon={btn.icon}
-                  className={classes.actionButton}
-                  style={btn.color ? { 
-                    background: `linear-gradient(45deg, ${btn.color} 30%, ${btn.color}dd 90%)`,
-                    color: '#fff'
-                  } : {}}
-                  onClick={() => btn.label === "WhatsApp" && setContactDialog(true)}
-                  aria-label={btn.label}
-                  fullWidth
-                >
-                  {btn.label}
-                </Button>
-              )
+              <Button
+                key={index}
+                startIcon={btn.icon}
+                className={classes.actionButton}
+                style={btn.color ? { 
+                  background: `linear-gradient(45deg, ${btn.color} 30%, ${btn.color}dd 90%)`,
+                  color: '#fff'
+                } : {}}
+                onClick={() => btn.path ? handleNavigation(btn.path) : setContactDialog(true)}
+                aria-label={btn.label}
+                fullWidth
+              >
+                {btn.label}
+              </Button>
             ))}
             <Divider style={{ margin: "28px 0", background: "#4a7c5944" }} />
             <Button
