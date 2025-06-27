@@ -60,7 +60,6 @@ const useStyles = makeStyles((theme) => ({
   logoContainer: {
     display: 'flex',
     alignItems: 'center',
-    
     flexGrow: 1,
   },
   logoAvatar: {
@@ -81,10 +80,7 @@ const useStyles = makeStyles((theme) => ({
   },
   drawerPaper: {
     width: 350,
-   
     background: 'linear-gradient(0deg, #dce3f4 -10%, #c6e5d9 80%, #b3f0d0 70%, #b3f0d0 30%)',
-
-
     color: '#fff',
   },
   drawerContent: {
@@ -323,7 +319,7 @@ export default function ResponsiveAppBar() {
 
   const handleNavigation = (path: string) => {
     setDrawerOpen(false);
-    router.push(path);
+    router.push(path).catch(err => console.error("Navigation error:", err));
   };
 
   const isAuthenticated = !!usuario?.email;
@@ -349,11 +345,13 @@ export default function ResponsiveAppBar() {
           icon: <People />,
           text: "Área Serviços",
           path: "/servicos",
+          onClick: () => handleNavigation("/servicos")
         },
         {
           icon: <People />,
           text: "Acompanhar Serviços",
           path: "/acompanhar",
+          onClick: () => handleNavigation("/acompanhar")
         }
       ]
     },
@@ -364,18 +362,21 @@ export default function ResponsiveAppBar() {
           icon: <Person />,
           text: "Área do Cliente",
           path: "/area-cliente",
+          onClick: () => handleNavigation("/area-cliente"),
           status: "ATIVO"
         }] : []),
         ...(hasEmpresarialAccess ? [{
           icon: <Business />,
           text: "Área Empresarial", 
           path: "/beto/empresas",
+          onClick: () => handleNavigation("/beto/empresas"),
           status: "PREMIUM"
         }] : []),
         ...(hasColaboradorAccess ? [{
           icon: <People />,
           text: "Área Colaboradores",
-          path: "/colaboradores"
+          path: "/colaboradores",
+          onClick: () => handleNavigation("/colaboradores")
         }] : [])
       ]
     },
@@ -385,7 +386,8 @@ export default function ResponsiveAppBar() {
         {
           icon: <Dashboard />,
           text: "Dashboard",
-          path: "/beto/dashboard"
+          path: "/beto/dashboard",
+          onClick: () => handleNavigation("/beto/dashboard")
         }
       ]
     }] : [])
@@ -395,7 +397,7 @@ export default function ResponsiveAppBar() {
     <Box className={classes.drawerContent}>
       <Box className={classes.drawerHeader}>
         <Typography variant="h6" className={classes.drawerTitle}>
-        
+          Menu Principal
         </Typography>
         <IconButton onClick={toggleDrawer} className={classes.closeButton}>
           <CloseIcon />
@@ -442,7 +444,7 @@ export default function ResponsiveAppBar() {
           <Typography variant="body2" style={{ opacity: 0.9, marginBottom: 16 }}>
             Faça login para acessar o sistema completo
           </Typography>
-<LoginEmailSenha/>
+          <LoginEmailSenha/>
           <Typography variant="caption" style={{ 
             textAlign: 'center', 
             opacity: 0.8, 
@@ -492,7 +494,7 @@ export default function ResponsiveAppBar() {
                     {isAuthenticated ? (
                       <ListItem 
                         button 
-                        onClick={() => item.path && handleNavigation(item.path)}
+                        onClick={item.onClick}
                         className={`${classes.menuItem} ${classes.menuItemAuthenticated}`}
                       >
                         <ListItemIcon className={classes.menuItemIcon}>
@@ -561,7 +563,7 @@ export default function ResponsiveAppBar() {
                     return hasAccess ? (
                       <ListItem 
                         button 
-                        onClick={() => item.path && handleNavigation(item.path)}
+                        onClick={item.onClick}
                         className={`${classes.menuItem} ${classes.menuItemAuthenticated}`}
                       >
                         <ListItemIcon className={classes.menuItemIcon}>
@@ -615,7 +617,7 @@ export default function ResponsiveAppBar() {
                   startIcon={btn.icon}
                   className={classes.actionButton}
                   style={btn.color ? { 
-                    
+                    background: `linear-gradient(45deg, ${btn.color} 30%, ${btn.color}dd 90%)`,
                     color: '#fff'
                   } : {}}
                   onClick={() => handleNavigation(btn.path)}
