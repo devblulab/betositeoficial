@@ -23,7 +23,6 @@ import {
   Paper,
   Chip
 } from '@material-ui/core';
-// Importações otimizadas - apenas os ícones necessários
 import MenuIcon from '@material-ui/icons/Menu';
 import Person from '@material-ui/icons/Person';
 import Business from '@material-ui/icons/Business';
@@ -38,19 +37,19 @@ import ExitToApp from '@material-ui/icons/ExitToApp';
 import VpnKey from '@material-ui/icons/VpnKey';
 import ViewModule from '@material-ui/icons/ViewModule';
 import AccountBalance from '@material-ui/icons/AccountBalance';
-
+import { useRouter } from 'next/router';
 import { FaWhatsapp } from 'react-icons/fa';
 import Link from 'next/link';
 import AutenticacaoContext from '@/data/contexts/AutenticacaoContext';
-import LoginEmailSenha from '@/components/landing/cabecalho/LoginEmailSenha';
 import { usePermissions } from '@/hooks/usePermissions';
+import LoginEmailSenha from '@/components/landing/cabecalho/LoginEmailSenha';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
   },
   appBar: {
-    background: 'linear-gradient(135deg, #1a4d3a 10%, #2d5a3d 100%)',
+    background: 'none',
     color: '#000',
     boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
   },
@@ -61,6 +60,7 @@ const useStyles = makeStyles((theme) => ({
   logoContainer: {
     display: 'flex',
     alignItems: 'center',
+    
     flexGrow: 1,
   },
   logoAvatar: {
@@ -77,14 +77,19 @@ const useStyles = makeStyles((theme) => ({
   },
   drawer: {
     width: 350,
+    background: 'none',
   },
   drawerPaper: {
     width: 350,
-    background: 'linear-gradient(180deg, #1a4d3a 0%, #2d5a3d 100%)',
+   
+    background: 'linear-gradient(0deg, #dce3f4 -10%, #c6e5d9 80%, #b3f0d0 70%, #b3f0d0 30%)',
+
+
     color: '#fff',
   },
   drawerContent: {
     display: 'flex',
+    background: 'none',
     flexDirection: 'column',
     height: '100%',
   },
@@ -303,6 +308,7 @@ export default function ResponsiveAppBar() {
   const [contactDialog, setContactDialog] = useState(false);
   const { usuario, loginGoogle, logout } = useContext(AutenticacaoContext);
   const { hasAreaAccess } = usePermissions();
+  const router = useRouter();
 
   const toggleDrawer = () => {
     setDrawerOpen(!drawerOpen);
@@ -313,6 +319,11 @@ export default function ResponsiveAppBar() {
       ...prev,
       [section]: !prev[section]
     }));
+  };
+
+  const handleNavigation = (path: string) => {
+    setDrawerOpen(false);
+    router.push(path);
   };
 
   const isAuthenticated = !!usuario?.email;
@@ -349,22 +360,18 @@ export default function ResponsiveAppBar() {
     {
       title: "Áreas Principais",
       items: [
-     
-        // Área Cliente - apenas para usuários com permissão
         ...(hasClienteAccess ? [{
           icon: <Person />,
           text: "Área do Cliente",
           path: "/area-cliente",
           status: "ATIVO"
         }] : []),
-        // Área Empresarial - apenas para usuários com permissão
         ...(hasEmpresarialAccess ? [{
           icon: <Business />,
           text: "Área Empresarial", 
           path: "/beto/empresas",
           status: "PREMIUM"
         }] : []),
-        // Área Colaboradores - apenas para usuários com permissão
         ...(hasColaboradorAccess ? [{
           icon: <People />,
           text: "Área Colaboradores",
@@ -380,7 +387,6 @@ export default function ResponsiveAppBar() {
           text: "Dashboard",
           path: "/beto/dashboard"
         }
-        
       ]
     }] : [])
   ];
@@ -389,14 +395,13 @@ export default function ResponsiveAppBar() {
     <Box className={classes.drawerContent}>
       <Box className={classes.drawerHeader}>
         <Typography variant="h6" className={classes.drawerTitle}>
-          Menu Principal
+        
         </Typography>
         <IconButton onClick={toggleDrawer} className={classes.closeButton}>
           <CloseIcon />
         </IconButton>
       </Box>
 
-      {/* Seção de Login/Usuário */}
       {isAuthenticated ? (
         <Box className={classes.userInfo}>
           <Avatar 
@@ -437,10 +442,7 @@ export default function ResponsiveAppBar() {
           <Typography variant="body2" style={{ opacity: 0.9, marginBottom: 16 }}>
             Faça login para acessar o sistema completo
           </Typography>
-
-          {/* Componente de Login Integrado */}
-          <LoginEmailSenha />
-
+<LoginEmailSenha/>
           <Typography variant="caption" style={{ 
             textAlign: 'center', 
             opacity: 0.8, 
@@ -453,7 +455,7 @@ export default function ResponsiveAppBar() {
           <Button
             startIcon={<ViewModule />}
             className={classes.loginButton}
-            onClick={() => window.location.href = '/servicos'}
+            onClick={() => handleNavigation('/servicos')}
             fullWidth
           >
             Ver Todos Serviços
@@ -488,10 +490,10 @@ export default function ResponsiveAppBar() {
                 {item.subItems ? (
                   <>
                     {isAuthenticated ? (
-                      <ListItem
-                        button
-                        onClick={() => toggleSection(`${sectionIndex}-${itemIndex}`)}
-                        className={`${classes.menuItem}`}
+                      <ListItem 
+                        button 
+                        onClick={() => item.path && handleNavigation(item.path)}
+                        className={`${classes.menuItem} ${classes.menuItemAuthenticated}`}
                       >
                         <ListItemIcon className={classes.menuItemIcon}>
                           {item.icon}
@@ -507,7 +509,6 @@ export default function ResponsiveAppBar() {
                             </Typography>
                           </Box>
                         )}
-                        {expandedSections[`${sectionIndex}-${itemIndex}`] ? <ExpandLess /> : <ExpandMore />}
                       </ListItem>
                     ) : (
                       <ListItem
@@ -530,10 +531,7 @@ export default function ResponsiveAppBar() {
                             button 
                             key={subIndex}
                             className={classes.subMenuItem}
-                            onClick={() => {
-                              setDrawerOpen(false);
-                              window.location.href = subItem.path;
-                            }}
+                            onClick={() => handleNavigation(subItem.path)}
                           >
                             <ListItemIcon className={classes.subMenuItemIcon}>
                               <Assignment />
@@ -548,7 +546,6 @@ export default function ResponsiveAppBar() {
                     </Collapse>
                   </>
                 ) : (
-                  // Verificar se o usuário tem acesso ao item específico
                   (() => {
                     const hasAccess = (
                       item.text === "Área Serviços" || 
@@ -557,31 +554,31 @@ export default function ResponsiveAppBar() {
                         (item.text === "Área do Cliente" && hasClienteAccess) ||
                         (item.text === "Área Empresarial" && hasEmpresarialAccess) ||
                         (item.text === "Área Colaboradores" && hasColaboradorAccess) ||
-                        (item.text.includes("Dashboard") && hasColaboradorAccess) ||
-                        (item.text.includes("Relatórios") && hasColaboradorAccess)
+                        (item.text.includes("Dashboard") && hasColaboradorAccess)
                       ))
                     );
 
-
                     return hasAccess ? (
-                      <Link href={item.path || '#'} passHref legacyBehavior>
-                        <ListItem button component="a" className={`${classes.menuItem} ${classes.menuItemAuthenticated}`}>
-                          <ListItemIcon className={classes.menuItemIcon}>
-                            {item.icon}
-                          </ListItemIcon>
-                          <ListItemText 
-                            primary={item.text} 
-                            className={classes.menuItemText}
-                          />
-                          {item.status && (
-                            <Box className={classes.statusBadge}>
-                              <Typography variant="caption" className={classes.statusText}>
-                                {item.status}
-                              </Typography>
-                            </Box>
-                          )}
-                        </ListItem>
-                      </Link>
+                      <ListItem 
+                        button 
+                        onClick={() => item.path && handleNavigation(item.path)}
+                        className={`${classes.menuItem} ${classes.menuItemAuthenticated}`}
+                      >
+                        <ListItemIcon className={classes.menuItemIcon}>
+                          {item.icon}
+                        </ListItemIcon>
+                        <ListItemText 
+                          primary={item.text} 
+                          className={classes.menuItemText}
+                        />
+                        {item.status && (
+                          <Box className={classes.statusBadge}>
+                            <Typography variant="caption" className={classes.statusText}>
+                              {item.status}
+                            </Typography>
+                          </Box>
+                        )}
+                      </ListItem>
                     ) : (
                       <ListItem className={`${classes.menuItem} ${classes.lockedItem}`}>
                         <ListItemIcon className={classes.menuItemIcon}>
@@ -607,26 +604,26 @@ export default function ResponsiveAppBar() {
         {isAuthenticated ? (
           <>
             {[
-              { icon: <FaWhatsapp />, label: "WhatsApp", color: "#25d366" as string | undefined },
-              ...(hasClienteAccess ? [{ icon: <Assignment />, label: "Área Cliente", path: "/area-cliente", color: undefined as string | undefined }] : []),
-              ...(hasEmpresarialAccess ? [{ icon: <Business />, label: "Área Empresarial", path: "/beto/empresas", color: undefined as string | undefined }] : []),
-              ...(hasColaboradorAccess ? [{ icon: <Dashboard />, label: "Colaboradores", path: "/colaboradores", color: undefined as string | undefined }] : [])
+              { icon: <FaWhatsapp />, label: "WhatsApp", color: "#25d366" },
+              ...(hasClienteAccess ? [{ icon: <Assignment />, label: "Área Cliente", path: "/area-cliente" }] : []),
+              ...(hasEmpresarialAccess ? [{ icon: <Business />, label: "Área Empresarial", path: "/beto/empresas" }] : []),
+              ...(hasColaboradorAccess ? [{ icon: <Dashboard />, label: "Colaboradores", path: "/colaboradores" }] : [])
             ].map((btn, index) => (
               btn.path ? (
-                <Link href={btn.path} key={index} style={{ textDecoration: 'none' }}>
-                  <Button
-                    startIcon={btn.icon}
-                    className={classes.actionButton}
-                    style={btn.color ? { 
-                      background: `linear-gradient(45deg, ${btn.color} 30%, ${btn.color}dd 90%)`,
-                      color: '#fff'
-                    } : {}}
-                    aria-label={btn.label}
-                    fullWidth
-                  >
-                    {btn.label}
-                  </Button>
-                </Link>
+                <Button
+                  key={index}
+                  startIcon={btn.icon}
+                  className={classes.actionButton}
+                  style={btn.color ? { 
+                    
+                    color: '#fff'
+                  } : {}}
+                  onClick={() => handleNavigation(btn.path)}
+                  aria-label={btn.label}
+                  fullWidth
+                >
+                  {btn.label}
+                </Button>
               ) : (
                 <Button
                   key={index}
@@ -663,11 +660,7 @@ export default function ResponsiveAppBar() {
               Sair do Sistema
             </Button>
           </>
-        ) : (
-          <>
-           
-          </>
-        )}
+        ) : null}
       </Box>
     </Box>
   );
