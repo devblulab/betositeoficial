@@ -145,7 +145,7 @@ import { Alert } from '@material-ui/lab';
 const useStyles = makeStyles((theme) => ({
   root: {
     padding: theme.spacing(3),
-    background: 'linear-gradient(135deg, #1a237e 0%, #3949ab 50%, #5c6bc0 100%)',
+    background: 'linear-gradient(135deg,rgb(128, 128, 128) 0%,rgba(130, 131, 130, 0.6) 50%,rgb(128, 128, 128) 100%)',
     minHeight: '100vh',
     position: 'relative',
     color: '#ffffff',
@@ -157,9 +157,9 @@ const useStyles = makeStyles((theme) => ({
     right: 0,
     bottom: 0,
     background: `
-      radial-gradient(circle at 20% 50%, rgba(63, 81, 181, 0.3) 0%, transparent 50%),
-      radial-gradient(circle at 80% 20%, rgba(156, 39, 176, 0.3) 0%, transparent 50%),
-      radial-gradient(circle at 40% 80%, rgba(0, 150, 136, 0.3) 0%, transparent 50%)
+      radial-gradient(circle at 20% 50%, rgba(63, 181, 126, 0.3) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(5, 116, 48, 0.3) 0%, transparent 50%),
+      radial-gradient(circle at 40% 80%, rgba(0, 150, 45, 0.3) 0%, transparent 50%)
     `,
     animation: '$quantumFlow 15s ease-in-out infinite',
     zIndex: 0,
@@ -225,7 +225,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   clientCard: {
-    background: 'linear-gradient(135deg, rgba(76, 175, 80, 0.1) 0%, rgba(63, 81, 181, 0.1) 100%)',
+    background: 'linear-gradient(135deg, rgba(166, 190, 167, 0.1) 0%, rgba(63, 81, 181, 0.1) 100%)',
     borderRadius: theme.spacing(2),
     padding: theme.spacing(2),
     margin: theme.spacing(1, 0),
