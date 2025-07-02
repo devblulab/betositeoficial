@@ -45,7 +45,7 @@ import Servicos from '@/pages/servicosland/index';
 const useStyles = makeStyles((theme) => ({
   root: {
     minHeight: '100vh',
-    background: 'linear-gradient(0deg, #dce3f4 -10%, #c6e5d9 90%, #497f66 65%, #b6f0d0 110%) ',
+    background: 'linear-gradient(0deg, #dce3f4 -10%, #c6e5d9 87%, #497f66 65%, #b6f0d0 110%) ',
     padding: theme.spacing(-9),
     position: 'relative',
     overflow: 'hidden',
@@ -615,20 +615,7 @@ export default function Home() {
                   </Button>
                 </motion.div>
                 
-                {!isXs && (
-                  <motion.div
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <Button
-                      className={classes.secondaryButton}
-                      startIcon={<FaCheck />}
-                      href="/servicos"
-                    >
-                      Conheça Nossos Serviços
-                    </Button>
-                  </motion.div>
-                )}
+                
               </motion.div>
             </motion.div>
           </Container>
