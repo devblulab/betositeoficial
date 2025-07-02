@@ -108,10 +108,14 @@ import {
   ReferenceLine,
 } from 'recharts';
 
+import { getFirestore, collection, addDoc, Timestamp } from 'firebase/firestore';
+import { app } from '@/logic/firebase/config/app'; // sua config Firebase
+
+
 const useStyles = makeStyles((theme) => ({
   root: {
     padding: theme.spacing(3),
-    background: 'linear-gradient(135deg, #0f0f23 0%, #1a1a40 50%, #2d2d5f 100%)',
+    background: 'linear-gradient(135deg,rgb(184, 184, 184) 0%,rgb(236, 236, 236) 50%,rgb(185, 185, 189) 100%)',
     minHeight: '100vh',
     position: 'relative',
     color: '#ffffff',
@@ -417,6 +421,8 @@ const DashboardIA: React.FC = () => {
   const [estrategiasModalOpen, setEstrategiasModalOpen] = useState(false);
   const [explanationModalOpen, setExplanationModalOpen] = useState(false);
   const [explanationContent, setExplanationContent] = useState('');
+const [insightIA, setInsightIA] = useState<string>('');
+
 
   const [aiMetrics, setAiMetrics] = useState({
     modelAccuracy: 98.7,
@@ -504,6 +510,53 @@ const DashboardIA: React.FC = () => {
     { layer: 'Output', nodes: 256, activation: 'Sigmoid' },
   ];
 
+
+
+async function chamarIA(prompt: string): Promise<string> {
+  try {
+    const res = await fetch('/api/gemini', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: prompt,
+        previousMessages: [],
+        userInfo: {},
+        selectedService: null,
+        step: 'initial',
+      }),
+    });
+
+    const data = await res.json();
+
+    return data?.response || 'Sem resposta da IA';
+  } catch (err) {
+    console.error('Erro na IA:', err);
+    return 'Erro na resposta da IA';
+  }
+}
+
+
+const db = getFirestore(app);
+
+async function salvarLogIA(prompt: string, resposta: string) {
+  try {
+    await addDoc(collection(db, 'logsIA'), {
+      prompt,
+      resposta,
+      criadoEm: Timestamp.now(),
+    });
+  } catch (e) {
+    console.error('Erro ao salvar log:', e);
+  }
+}
+
+async function analisarComIA() {
+  const prompt = 'Analise neural quântica dos dados do dashboard e dê recomendações de marketing e performance';
+  const resposta = await chamarIA(prompt);
+  await salvarLogIA(prompt, resposta);
+  setInsightIA(resposta);
+}
+
   // Função para carregar dados reais do Firebase
   const loadFirebaseData = useCallback(async () => {
     try {
@@ -516,9 +569,9 @@ const DashboardIA: React.FC = () => {
       const collections = {
         usuarios: await colecao.consultarTodos('usuarios'),
         processos: await colecao.consultarTodos('processos'),
-        requerimentos: await colecao.consultarTodos('requerimentos'),
+        requerimentos: await colecao.consultarTodos('Betodespachanteintrncaodevendaoficial'),
         transferencias: await colecao.consultarTodos('transferencias'),
-        empresas: await colecao.consultarTodos('empresas'),
+        empresas: await colecao.consultarTodos('Betodespachanteintrncaodevendaoficialdigital'),
         financeiro: await colecao.consultarTodos('financeiro'),
         atendimentos: await colecao.consultarTodos('atendimentos'),
         feedbacks: await colecao.consultarTodos('feedbacks'),
@@ -944,6 +997,19 @@ const DashboardIA: React.FC = () => {
               >
                 A IA que entende seu negócio melhor que você mesmo 😏 • Vendas • Clientes • Dinheiro
               </Typography>
+              <Button variant="contained" color="primary" onClick={analisarComIA}>
+  Analisar com IA Real
+</Button>
+
+{insightIA && (
+  <Box mt={2}>
+    <Typography variant="subtitle1">Resposta da IA:</Typography>
+    <Paper style={{ padding: 16, backgroundColor: '#f5f5f5' }}>
+      <Typography>{insightIA}</Typography>
+    </Paper>
+  </Box>
+)}
+
 
               {/* Gemini Integration Status */}
               <Paper className={classes.geminiIntegration}>
