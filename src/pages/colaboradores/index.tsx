@@ -70,14 +70,18 @@ import {
   EmojiObjects,
   Business,
   Timeline,
-  NotificationsActive,
+  WhatsApp,
+  Security,
+  Assignment,
   Settings,
+  NotificationsActive,
+
   Brightness4,
   Brightness7,
   Fullscreen,
   FullscreenExit,
   Refresh,
-  Security,
+
   Extension,
   Visibility,
   VisibilityOff,
@@ -149,13 +153,12 @@ import {
   BatteryChargingFull,
   PowerSettingsNew,
   PowerOff,
-  WhatsApp,
   Code,
   DataUsage,
   Storage,
   Memory,
   SpeedOutlined,
-  Assignment,
+ 
   Person,
   AccountBalance,
   Dashboard,
@@ -182,6 +185,7 @@ import { usePermissions } from '@/hooks/usePermissions';
 // Removidos imports do React Icons - usando apenas Material-UI
 import IAColaborador from '@/components/dashboard/IAColaborador';
 import ClienteLocalizador from '@/components/crm/ClienteLocalizador';
+import WhatsAppTabs from '@/components/whatsapp/WhatsAppTabs';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -465,6 +469,8 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: theme.spacing(2),
     padding: theme.spacing(2),
     minWidth: 200,
+    zIndex: 1,
+
     color: 'rgba(0,0,0,0.7)',
     boxShadow: theme.shadows[8],
     border: `2px solid ${theme.palette.primary.main}`,
@@ -756,6 +762,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     gap: theme.spacing(1),
     flexWrap: 'wrap',
+    
     marginTop: theme.spacing(1),
     justifyContent: 'center',
     [theme.breakpoints.down('sm')]: {
@@ -952,6 +959,7 @@ const Colaboradores: React.FC = () => {
   const [profilePermissions, setProfilePermissions] = useState<any>({});
   const [dashboardExpanded, setDashboardExpanded] = useState<string | null>(null);
   const [selectedDashboard, setSelectedDashboard] = useState<string>('');
+  const [whatsappExpanded, setWhatsappExpanded] = useState(false);
 
   // Estados para sistema de permissões
   const [selectedUserForPermissions, setSelectedUserForPermissions] = useState<any>(null);
@@ -1102,6 +1110,7 @@ const Colaboradores: React.FC = () => {
         feed: { ativo: true, criar: true, editar: true, excluir: true, visualizar: true },
         usuarios: { ativo: true, criar: true, editar: true, excluir: true, visualizar: true },
         whatsapp: { ativo: true, criar: true, editar: true, excluir: true, visualizar: true },
+        whatsappmult: { ativo: true, criar: true, editar: true, excluir: true, visualizar: true },
         relatorios: { ativo: true, criar: true, editar: true, excluir: true, visualizar: true },
         configuracoes: { ativo: true, criar: true, editar: true, excluir: true, visualizar: true },
         permissoes: { ativo: true, criar: true, editar: true, excluir: true, visualizar: true }
@@ -1122,6 +1131,7 @@ const Colaboradores: React.FC = () => {
         feed: { ativo: true, criar: true, editar: true, excluir: false, visualizar: true },
         usuarios: { ativo: true, criar: true, editar: true, excluir: true, visualizar: true },
         whatsapp: { ativo: true, criar: false, editar: true, excluir: false, visualizar: true },
+        whatsappmult: { ativo: true, criar: false, editar: true, excluir: false, visualizar: true },
         relatorios: { ativo: true, criar: true, editar: false, excluir: false, visualizar: true },
         configuracoes: { ativo: true, criar: false, editar: true, excluir: false, visualizar: true },
         permissoes: { ativo: true, criar: false, editar: true, excluir: false, visualizar: true }
@@ -1142,6 +1152,7 @@ const Colaboradores: React.FC = () => {
         feed: { ativo: true, criar: true, editar: true, excluir: true, visualizar: true },
         usuarios: { ativo: true, criar: true, editar: true, excluir: true, visualizar: true },
         whatsapp: { ativo: true, criar: true, editar: true, excluir: true, visualizar: true },
+        whatsappmult: { ativo: true, criar: true, editar: true, excluir: true, visualizar: true },
         relatorios: { ativo: true, criar: true, editar: true, excluir: true, visualizar: true },
         configuracoes: { ativo: true, criar: true, editar: true, excluir: true, visualizar: true },
         permissoes: { ativo: true, criar: true, editar: true, excluir: true, visualizar: true }
@@ -1162,6 +1173,7 @@ const Colaboradores: React.FC = () => {
         feed: { ativo: true, criar: true, editar: false, excluir: false, visualizar: true },
         usuarios: { ativo: false, criar: false, editar: false, excluir: false, visualizar: false },
         whatsapp: { ativo: true, criar: true, editar: true, excluir: false, visualizar: true },
+        whatsappmult: { ativo: true, criar: true, editar: true, excluir: false, visualizar: true },
         relatorios: { ativo: true, criar: false, editar: false, excluir: false, visualizar: true },
         configuracoes: { ativo: false, criar: false, editar: false, excluir: false, visualizar: false },
         permissoes: { ativo: false, criar: false, editar: false, excluir: false, visualizar: false }
@@ -1182,6 +1194,7 @@ const Colaboradores: React.FC = () => {
         feed: { ativo: true, criar: false, editar: false, excluir: false, visualizar: true },
         usuarios: { ativo: false, criar: false, editar: false, excluir: false, visualizar: false },
         whatsapp: { ativo: false, criar: false, editar: false, excluir: false, visualizar: false },
+        whatsappmult: { ativo: false, criar: false, editar: false, excluir: false, visualizar: false },
         relatorios: { ativo: true, criar: false, editar: false, excluir: false, visualizar: true },
         configuracoes: { ativo: false, criar: false, editar: false, excluir: false, visualizar: false },
         permissoes: { ativo: false, criar: false, editar: false, excluir: false, visualizar: false }
@@ -1300,9 +1313,11 @@ const Colaboradores: React.FC = () => {
     { id: 'feed', nome: 'Feed', icon: <Timeline />, descricao: 'Feed de notícias' },
     { id: 'usuarios', nome: 'Usuários', icon: <People />, descricao: 'Gestão de usuários' },
     { id: 'whatsapp', nome: 'WhatsApp', icon: <WhatsApp />, descricao: 'Integração WhatsApp' },
+    
     { id: 'relatorios', nome: 'Relatórios', icon: <Timeline />, descricao: 'Relatórios gerenciais' },
     { id: 'configuracoes', nome: 'Configurações', icon: <Settings />, descricao: 'Configurações do sistema' },
-    { id: 'permissoes', nome: 'Permissões', icon: <Security />, descricao: 'Gestão de permissões' }
+    { id: 'permissoes', nome: 'Permissões', icon: <Security />, descricao: 'Gestão de permissões' },
+    { id: 'whatsappmult', nome: 'whatsappmult', icon: <WhatsApp />, descricao: 'Integração WhatsApp Mult' }
   ];
 
   const speedDialActions = [
@@ -1670,7 +1685,7 @@ const Colaboradores: React.FC = () => {
                       hasAccess = hasEmpresarialAccess;
                     } else if (item.text === "Área Colaboradores") {
                       hasAccess = hasColaboradorAccess;
-                    } else if (item.text === "Dashboard") {
+                                        } else if (item.text === "Dashboard") {
                       hasAccess = hasModulePermission(
                         hasColaboradorAccess ? 'colaborador' : 'empresarial', 
                         'dashboard', 
@@ -1764,6 +1779,7 @@ const Colaboradores: React.FC = () => {
     router.push('/');
     return null;
   }
+
   return (
     <div className={classes.root} onContextMenu={handleContextMenu}>
       <CssBaseline />
@@ -1778,9 +1794,7 @@ const Colaboradores: React.FC = () => {
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 0.5 }}
       >
-        <Typography variant="body2" style={{ fontWeight: 'bold', marginBottom: 8 }}>
-          🧠 Sistema Neural
-        </Typography>
+    
         <Typography variant="caption">
           {realtimeUsers} usuários online
         </Typography>
@@ -1814,28 +1828,10 @@ const Colaboradores: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <Typography 
-            variant="h3" 
-            style={{ 
-              fontWeight: 900, 
-              marginBottom: 16,
-              fontSize: isMobile ? '1.8rem' : undefined,
-              lineHeight: isMobile ? 1.2 : undefined
-            }}
-          >
-            🚀 Enygma Colaboradores
-          </Typography>
-          <Typography 
-            variant="h6" 
-            style={{ 
-              opacity: 0.9,
-              fontSize: isMobile ? '1rem' : undefined
-            }}
-          >
-            Plataforma Corporativa Inteligente
-          </Typography>
+          
+         
            {/* Informações de perfil do usuário */}
-           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: theme.spacing(2) }}>
+           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: theme.spacing(-3) }}>
             <Avatar
               src={usuario?.imagemUrl || '/betologo.jpeg'}
               style={{ width: 50, height: 50, marginRight: theme.spacing(1) }}
@@ -1907,50 +1903,8 @@ const Colaboradores: React.FC = () => {
           </Box>
             </div>
           </div>
-          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-            <Chip 
-              label="🤖 IA Lívia Ativa" 
-              style={{ backgroundColor: 'rgba(255,255,255,0.2)', color: 'white' }}
-            />
-            <Chip 
-              label="⚡ Sistema Neural" 
-              style={{ backgroundColor: 'rgba(255,255,255,0.2)', color: 'white' }}
-            />
-            <Chip 
-              label="🔐 Segurança Avançada" 
-              style={{ backgroundColor: 'rgba(255,255,255,0.2)', color: 'white' }}
-            />
-          </div>
-          {/* Métricas de Performance */}
-          <div className={classes.performanceMetrics}>
-            <div className={classes.metricItem}>
-              <Typography variant="caption">CPU</Typography>
-              <LinearProgress 
-                variant="determinate" 
-                value={performanceMetrics.cpu} 
-                style={{ width: 60, height: 4, borderRadius: 2, backgroundColor: 'rgba(255,255,255,0.3)' }}
-              />
-              <Typography variant="caption">{Math.round(performanceMetrics.cpu)}%</Typography>
-            </div>
-            <div className={classes.metricItem}>
-              <Typography variant="caption">RAM</Typography>
-              <LinearProgress 
-                variant="determinate" 
-                value={performanceMetrics.memory} 
-                style={{ width: 60, height: 4, borderRadius: 2, backgroundColor: 'rgba(255,255,255,0.3)' }}
-              />
-              <Typography variant="caption">{Math.round(performanceMetrics.memory)}%</Typography>
-            </div>
-            <div className={classes.metricItem}>
-              <Typography variant="caption">NET</Typography>
-              <LinearProgress 
-                variant="determinate" 
-                value={performanceMetrics.network} 
-                style={{ width: 60, height: 4, borderRadius: 2, backgroundColor: 'rgba(255,255,255,0.3)' }}
-              />
-              <Typography variant="caption">{Math.round(performanceMetrics.network)}%</Typography>
-            </div>
-          </div>
+           
+         
         </motion.div>
       </Paper>
 
@@ -1959,59 +1913,7 @@ const Colaboradores: React.FC = () => {
 
 
 
-        {/* Cartão de Boas-Vindas */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.2 }}
-        >
-          <Card className={classes.welcomeCard}>
-            <CardContent style={{ 
-              padding: isMobile ? '16px' : '32px',
-              textAlign: isMobile ? 'center' : 'left'
-            }}>
-              <Grid container alignItems="center" spacing={isMobile ? 2 : 3}>
-                <Grid item xs={12} md={8}>
-                  <Typography 
-                    variant="h4" 
-                    style={{ 
-                      fontWeight: 'bold', 
-                      marginBottom: 8,
-                      fontSize: isMobile ? '1.5rem' : undefined,
-                      lineHeight: isMobile ? 1.3 : undefined
-                    }}
-                  >
-                    Bem-vindo ao Futuro da Colaboração! 🌟
-                  </Typography>
-                  <Typography 
-                    variant="body1" 
-                    style={{ 
-                      opacity: 0.9, 
-                      marginBottom: 16,
-                      fontSize: isMobile ? '0.9rem' : undefined
-                    }}
-                  >
-                    Sua plataforma corporativa com IA avançada, automação inteligente e colaboração em tempo real.
-                  </Typography>
-
-                </Grid>
-                <Grid item xs={12} md={4} style={{ textAlign: 'center' }}>
-                  <div className={classes.realtimeStatus}>
-                    <div style={{ 
-                      width: 12, 
-                      height: 12, 
-                      borderRadius: '50%', 
-                      backgroundColor: '#4CAF50',
-                      animation: 'pulse 2s infinite'
-                    }} />
-                    <Typography variant="body2">{realtimeUsers} Online</Typography>
-                  </div>
-                </Grid>
-              </Grid>
-            </CardContent>
-          </Card>
-        </motion.div>
-
+       
         {/* Sistema de Tabs */}
         <Paper className={classes.tabsContainer}>
           <Tabs
@@ -2077,6 +1979,7 @@ const Colaboradores: React.FC = () => {
                 </div>
               } 
             />
+            
             <Tab 
               label={
                 <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -2101,6 +2004,14 @@ const Colaboradores: React.FC = () => {
                 </div>
               } 
             />
+            <Tab 
+              label={
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <WhatsApp style={{ marginRight: 8 }} />
+                  WhatsApp MULT
+                </div>
+              } 
+            />
           </Tabs>
 
           {/* Tab Panels */}
@@ -2113,7 +2024,7 @@ const Colaboradores: React.FC = () => {
                   justifyContent: 'space-between', 
                   alignItems: 'center',
                   padding: '16px 24px',
-                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                  background: 'linear-gradient(135deg,rgb(162, 164, 170) 0%,rgb(17, 114, 33) 100%)',
                   color: 'white',
                   borderRadius: '12px 12px 0 0',
                   marginBottom: 0
@@ -2259,9 +2170,62 @@ const Colaboradores: React.FC = () => {
             <ChatInterno />
           </TabPanel>
 
-          <TabPanel value={tabValue} index={2}>
-            <ChatIA />
+          <TabPanel value={tabValue} index={10}>
+            {/* WhatsApp Tab */}
+        {tabValue === 2 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            {whatsappExpanded ? (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                transition={{ duration: 0.3 }}
+              >
+                <WhatsAppTabs />
+              </motion.div>
+            ) : (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3 }}
+                style={{ 
+                  padding: 20, 
+                  textAlign: 'center',
+                  background: 'rgba(255,255,255,0.05)',
+                  borderRadius: 12,
+                  margin: 16
+                }}
+              >
+                <WhatsApp style={{ fontSize: 48, color: '#25D366', marginBottom: 16 }} />
+                <Typography variant="h6" gutterBottom>
+                  Sistema WhatsApp Multi-Plataforma
+                </Typography>
+                <Typography variant="body2" color="textSecondary" style={{ marginBottom: 16 }}>
+                  Clique novamente na aba para expandir e acessar o WhatsApp Business, Pessoal e Digisac
+                </Typography>
+                <Button
+                  variant="contained"
+                  startIcon={<WhatsApp />}
+                  onClick={() => setWhatsappExpanded(true)}
+                  style={{
+                    background: 'linear-gradient(45deg, #25D366 30%, #128c7e 90%)',
+                    color: 'white'
+                  }}
+                >
+                  Expandir WhatsApp Center
+                </Button>
+              </motion.div>
+            )}
+          </motion.div>
+        )}
           </TabPanel>
+           <TabPanel value={tabValue} index={2}>
+            <ChatIA  />
+          </TabPanel>
+
 
           <TabPanel value={tabValue} index={3}>
             <CRM />
@@ -2568,8 +2532,8 @@ const Colaboradores: React.FC = () => {
                             ))}
                           </div>
                         </Collapse>
-                      </CardContent>
-                    </Card>
+                      </CardContent>     
+                        </Card>
                   </Grid>
                 ))}
               </Grid>
@@ -2580,8 +2544,12 @@ const Colaboradores: React.FC = () => {
             {/* Localizador de Clientes */}
             <ClienteLocalizador />
           </TabPanel>
+          
         </Paper>
       </Container>
+      <TabPanel value={tabValue} index={10}>
+            <WhatsAppTabs />
+          </TabPanel>
 
       {/* SpeedDial IA */}
       <div className={classes.aiAssistant}>
@@ -2767,7 +2735,7 @@ const Colaboradores: React.FC = () => {
                       <Visibility style={{ color: '#9e9e9e', fontSize: 18 }} />
                       <div>
                         <div style={{ fontWeight: 'bold' }}>Visualizador</div>
-                        <div style={{ fontSize: '0.75rem', color: '#666' }}>Apenas visualização básica</div>
+                        <div style={{ fontSize: '0.75rem', color: '#666' }}>Acesso apenas visualização básica</div>
                       </div>
                     </div>
                   </MenuItem>
@@ -2904,7 +2872,7 @@ const Colaboradores: React.FC = () => {
                       <Visibility style={{ color: '#9e9e9e', fontSize: 18 }} />
                       <div>
                         <div style={{ fontWeight: 'bold' }}>Visualizador</div>
-                        <div style={{ fontSize: '0.75rem', color: '#666' }}>Apenas visualização básica</div>
+                        <div style={{ fontSize: '0.75rem', color: '#666' }}>Acesso apenas visualização básica</div>
                       </div>
                     </div>
                   </MenuItem>
@@ -3053,6 +3021,9 @@ const Colaboradores: React.FC = () => {
           </Button>
         </DialogActions>
       </Dialog>
+
+
+
 
       {/* Dialog de Permissões */}
       {renderPermissionDialog()}
