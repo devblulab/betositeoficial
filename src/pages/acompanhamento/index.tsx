@@ -409,7 +409,7 @@ export default function AreaCliente() {
       .map((v) => v.trim())
       .filter((v) => v.length > 0);
     if (identifiers.length === 0) {
-      setSearchError('Por favor, insira pelo menos um identificador (email, CPF, CNPJ, nome, etc.).');
+      setSearchError('Por favor, insira pelo menos um identificador (CPF, CNPJ).');
       return false;
     }
     setSearchError(null);
@@ -755,50 +755,22 @@ export default function AreaCliente() {
   
       <Container maxWidth="lg" style={{ marginTop: 24 }}>
         <Paper elevation={3} style={{ padding: 32, borderRadius: 16 }}>
-          {/* Cabeçalho da Área do Cliente */}
-          <Box textAlign="center" marginBottom={4}>
-            <Typography
-              variant="h4"
-              style={{
-                color: '#2d5a3d',
-                fontWeight: 'bold',
-                fontFamily: '"Playfair Display", "Georgia", serif',
-                marginBottom: 8,
-              }}
-            >
-              🏠 Área do Cliente
-            </Typography>
-            <Typography variant="subtitle1" style={{ color: '#666' }}>
-              Pesquise seus documentos ou acompanhe seus processos
-            </Typography>
-          </Box>
-
+     
           {/* Título e Filtros */}
           <Box display="flex" justifyContent="space-between" alignItems="center" marginBottom={3}>
             <Box>
               <Typography variant="h6" style={{ color: '#4a7c59', fontWeight: 'bold' }}>
-                Seus Processos {loading && <CircularProgress size={20} style={{ marginLeft: 8 }} />}
+                Seus Processos {loading && <CircularProgress size={10} style={{ marginLeft: 8 }} />}
               </Typography>
-              <Typography variant="body2" style={{ color: '#666', marginTop: 4 }}>
+              <Typography variant="body2" style={{ color: '#666', marginTop: 6 }}>
                 Acompanhe o andamento de todos os seus serviços
               </Typography>
             </Box>
-            <Box display="flex" style={{ gap: 2 }}>
-              <Tooltip title="Atualizar">
-                <IconButton onClick={fetchUserData} disabled={loading}>
-                  <Refresh />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Filtros Avançados">
-                <IconButton onClick={() => setAdvancedFilterOpen(true)}>
-                  <FilterList />
-                </IconButton>
-              </Tooltip>
-            </Box>
+         
           </Box>
 
           {/* Barra de Busca e Filtro Rápido */}
-          <Box display="flex" alignItems="center" marginBottom={4} style={{ gap: 8 }}>
+          <Box display="flex" alignItems="center" marginBottom={6} style={{ gap: 8 }}>
             <TextField
               label="Pesquisar"
               variant="outlined"
@@ -809,7 +781,7 @@ export default function AreaCliente() {
               onKeyPress={(e) => e.key === 'Enter' && handleSearchSubmit()}
               error={!!searchError}
               helperText={searchError}
-              placeholder="Ex: email@exemplo.com, 123.456.789-00, João Silva"
+              placeholder="Ex: 123.456.789-00"
             />
             <Tooltip title="Buscar">
               <IconButton onClick={handleSearchSubmit} disabled={loading}>
