@@ -407,6 +407,6 @@ Este projeto está sob a licença **MIT**. Veja o arquivo [LICENSE.md](LICENSE.m
 
 **🚀 Desenvolvido com ❤️ pela equipe Enygma Enterprise**
 
-[Website](https://enygma.dev) • [LinkedIn](https://linkedin.com/company/enygma) • [Twitter](https://twitter.com/enygmadev)
+[Website](https://enygna-enterprises.com.br/) • [LinkedIn](https://linkedin.com/enygma-enterprises) • [Twitter](https://twitter.com/enygmadev)
 
 </div>
