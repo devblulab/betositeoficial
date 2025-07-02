@@ -56,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     height: '100%',
-    minHeight: '320px',
+    minHeight: '220px',
     '&:hover': {
       transform: 'translateY(-8px)',
       boxShadow: '0 20px 40px rgba(37, 99, 235, 0.15)',
@@ -64,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   cardContent: {
-    padding: theme.spacing(2),
+    padding: theme.spacing(1),
     display: 'flex',
     flexDirection: 'column',
     flexGrow: 1,
@@ -133,8 +133,8 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 'auto',
-    paddingTop: theme.spacing(2),
+   
+    paddingTop: theme.spacing(-4),
   },
   noResults: {
     textAlign: 'center',
@@ -260,12 +260,6 @@ CLIQUE AQUI
                           {servico.nome}
                         </Typography>
 
-                        {servico.descricao && (
-                          <Typography className={classes.serviceDescription}>
-                            {servico.descricao}
-                          </Typography>
-                        )}
-
                         <Box className={classes.serviceFooter}>
                           <Chip
                             label={servico.tipo}
@@ -273,8 +267,8 @@ CLIQUE AQUI
                             style={{ 
                               backgroundColor: servico.tipo === 'TAXAS' ? '#dcfce7' : '#fef3c7', 
                               color: servico.tipo === 'TAXAS' ? '#166534' : '#92400e',
-                              fontSize: '0.7rem',
-                              fontWeight: 600
+                              fontSize: '0.6rem',
+                              fontWeight: 400
                             }}
                           />
                         </Box>
