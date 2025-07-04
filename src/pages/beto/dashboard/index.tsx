@@ -17,7 +17,6 @@ import {
 import { Timestamp } from 'firebase/firestore';
 import { query, where } from 'firebase/firestore';
 import {Thumbnails} from '@/components/enterprises/betodespa/transferencia/thumbnails';
-import { query, where } from 'firebase/firestore';
 
 const db = getFirestore(app);
 
