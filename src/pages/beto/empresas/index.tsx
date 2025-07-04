@@ -63,7 +63,7 @@ import { motion, useReducedMotion, AnimatePresence } from 'framer-motion';
 const useStyles = makeStyles((theme) => ({
   root: {
     minHeight: '100vh',
-    background: 'linear-gradient(135deg, #000000 0%, #1a1a1a 25%, #2d2d2d 75%, #0f4c3a 100%)',
+    background: 'linear-gradient(135deg, #ffffff 0%, #ffffff 25%, #ffffff 75%, #ffffff 100%)',
     color: '#ffffff',
   },
   appBar: {
