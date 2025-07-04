@@ -16,6 +16,8 @@ import {
 } from '@material-ui/icons';
 import { Timestamp } from 'firebase/firestore';
 import { query, where } from 'firebase/firestore';
+import {Thumbnails} from '@/components/enterprises/betodespa/transferencia/thumbnails';
+import { query, where } from 'firebase/firestore';
 
 const db = getFirestore(app);
 
@@ -1052,6 +1054,7 @@ const Dashboard = () => {
                         <span>•</span>
                         <DateRange fontSize="small" />
                         <span>{formatDate(doc.dataCriacao)}</span>
+                        <Thumbnails urls={doc.imagemUrls} />
                       </div>
                       <Box mt={1}>
                         <Typography variant="body2" color="textSecondary">
